@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0.CommonLib", "CommonLib\0.CommonLib.csproj", "{49821B3B-9D7A-464A-A2E3-110161386F32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.ezHttpConsoleVer", "ezHttpConsoleVer\5.ezHttpConsoleVer.csproj", "{FD4A154A-51F6-4DD3-83E0-8E28B49DBD6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.SocketManager", "SocketManager\2.SocketManager.csproj", "{7241ACB8-470F-43DD-9DBB-9C47E455AE7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.FileManager", "FileManager\1.FileManager.csproj", "{CBF1171F-0E44-4920-9D92-52932C632076}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.HttpParser", "HttpParser\3.HttpParser.csproj", "{140D5902-82F4-40C7-AC4F-8D501C241C6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.BizLogic", "BizLogic\4.BizLogic.csproj", "{78C54A56-D3CC-42DE-8342-B98EC484DE95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6.ezHttp", "ezHttp\6.ezHttp.csproj", "{1F984C86-C2EF-4C14-B551-3BAA556F34FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49821B3B-9D7A-464A-A2E3-110161386F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49821B3B-9D7A-464A-A2E3-110161386F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49821B3B-9D7A-464A-A2E3-110161386F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49821B3B-9D7A-464A-A2E3-110161386F32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4A154A-51F6-4DD3-83E0-8E28B49DBD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4A154A-51F6-4DD3-83E0-8E28B49DBD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4A154A-51F6-4DD3-83E0-8E28B49DBD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4A154A-51F6-4DD3-83E0-8E28B49DBD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7241ACB8-470F-43DD-9DBB-9C47E455AE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7241ACB8-470F-43DD-9DBB-9C47E455AE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7241ACB8-470F-43DD-9DBB-9C47E455AE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7241ACB8-470F-43DD-9DBB-9C47E455AE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF1171F-0E44-4920-9D92-52932C632076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF1171F-0E44-4920-9D92-52932C632076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF1171F-0E44-4920-9D92-52932C632076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF1171F-0E44-4920-9D92-52932C632076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{140D5902-82F4-40C7-AC4F-8D501C241C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{140D5902-82F4-40C7-AC4F-8D501C241C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{140D5902-82F4-40C7-AC4F-8D501C241C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{140D5902-82F4-40C7-AC4F-8D501C241C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78C54A56-D3CC-42DE-8342-B98EC484DE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78C54A56-D3CC-42DE-8342-B98EC484DE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78C54A56-D3CC-42DE-8342-B98EC484DE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78C54A56-D3CC-42DE-8342-B98EC484DE95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F984C86-C2EF-4C14-B551-3BAA556F34FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F984C86-C2EF-4C14-B551-3BAA556F34FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F984C86-C2EF-4C14-B551-3BAA556F34FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F984C86-C2EF-4C14-B551-3BAA556F34FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
