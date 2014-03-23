@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ServerDirectory" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">D:/WebServer/</Value>
+      <Value Profile="(Default)">C:/WebServer</Value>
     </Setting>
     <Setting Name="PageSize" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">4096</Value>

@@ -22,5 +22,14 @@ namespace HttpParser.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/Index.html")]
+        public string WelcomePageUrl {
+            get {
+                return ((string)(this["WelcomePageUrl"]));
+            }
+        }
     }
 }
