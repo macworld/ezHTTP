@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FileManager.Properties" GeneratedClassName="FileManagerSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServerDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D:/WebServer/</Value>
+    </Setting>
+    <Setting Name="PageSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4096</Value>
+    </Setting>
+    <Setting Name="MaxPageNum" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">16384</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
