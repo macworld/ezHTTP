@@ -10,26 +10,20 @@ namespace ezHttpConsoleVer
     {
         static void Main(string[] args)
         {
-            int numConnections;
-            int receiveSize;
-            IPEndPoint localEndPoint;
-            int port;
+            SocketManagerExample();
+        }
 
+        static void SocketManagerExample()
+        {
 
-            numConnections = 1024;
-            receiveSize = 64;
-            port = 8080;
-            localEndPoint = new IPEndPoint(IPAddress.Any, port);
-            // Start the server listening for incoming connection requests
-            Server server = new Server(numConnections, receiveSize);
-            server.Init();
-            if(server.Start(localEndPoint) == false)
+            SocketServer socketServer = new SocketServer();
+            socketServer.Init();
+            if (socketServer.Start() == false)
                 Console.WriteLine("Start failed");
-            server.OnDataReceived += new Server.ConnetionChangedEventHandler(OnReceivedData);
+            socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedData);
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();
         }
-
         static void OnReceivedData(object sender, Socket e, byte[] data)
         {
 

@@ -13,7 +13,7 @@ namespace SocketManager
     /// from the client is sent back to the client.  The read and echo back to the client pattern is continued 
     /// until the client disconnects.
     /// </summary>
-    public class Server
+    public class SocketServer
     {
         #region 变量定义
         private int m_numConnections;   // the maximum number of connections the sample is designed to handle simultaneously 
@@ -33,13 +33,13 @@ namespace SocketManager
         public delegate void ConnetionChangedEventHandler(Object sender, Socket skt, byte[] rawdata);
         public event ConnetionChangedEventHandler OnDataReceived;
         #endregion
+
         /// <summary>
-        /// Create an uninitialized server instance.  To start the server listening for connection requests
-        /// call the Init method followed by Start method 
+        /// 根据传入参数建立一个一个未初始化的SocketServer实例，调用Init方法来初始化，调用Start开始监听端口 
         /// </summary>
-        /// <param name="numConnections">the maximum number of connections the sample is designed to handle simultaneously</param>
-        /// <param name="receiveBufferSize">buffer size to use for each socket I/O operation</param>
-        public Server(int numConnections, int receiveBufferSize)
+        /// <param name="numConnections">可同时处理的最大连接数</param>
+        /// <param name="receiveBufferSize">每一个Socket用于接收数据的缓存大小，单位为字节</param>
+        public SocketServer(int numConnections, int receiveBufferSize)
         {
             m_totalBytesRead = 0;
             m_numConnectedSockets = 0;
@@ -52,6 +52,15 @@ namespace SocketManager
 
             m_readWritePool = new SocketAsyncEventArgsPool(numConnections);
             m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
+        }
+
+        /// <summary>
+        /// 根据配置文件建立一个一个未初始化的SocketServer实例，调用Init方法来初始化，调用Start开始监听端口 
+        /// </summary>
+        public SocketServer()
+            : this(Properties.SocketManager.Default.MaxConnections
+                , Properties.SocketManager.Default.ReceiveBufferSize)
+        {
         }
 
         /// <summary>
@@ -109,7 +118,17 @@ namespace SocketManager
             return true;
         }
 
-
+        /// <summary>
+        /// 根据配置文件制定端口和IP协议版本开启监听
+        /// </summary>
+        /// <returns></returns>
+        public bool Start()
+        {
+            if (Properties.SocketManager.Default.IPv6)
+                return Start(new IPEndPoint(IPAddress.IPv6Any, Properties.SocketManager.Default.ListenPort));
+            else
+                return Start(new IPEndPoint(IPAddress.Any, Properties.SocketManager.Default.ListenPort));
+        }
         /// <summary>
         /// Begins an operation to accept a connection request from the client 
         /// </summary>
