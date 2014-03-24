@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="HttpProtocolParser.cs" />
     <Compile Include="Properties\HttpParserSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -48,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\HttpParserSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>HttpParserSettings.Designer.cs</LastGenOutput>
