@@ -25,7 +25,7 @@ namespace FileManager.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:/WebServer/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:/WebServer")]
         public string ServerDirectory {
             get {
                 return ((string)(this["ServerDirectory"]));

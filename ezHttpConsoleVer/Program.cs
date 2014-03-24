@@ -4,6 +4,9 @@ using System.Text;
 using System.Net;
 using SocketManager;
 using System.Net.Sockets;
+using FileManager;
+using HttpParser;
+
 namespace ezHttpConsoleVer
 {
     class Program
@@ -34,7 +37,15 @@ namespace ezHttpConsoleVer
 
             data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
             string tempString = Encoding.UTF8.GetString(data, 0, data.Length);
-
+            int statusCode = 0;
+            HttpProtocolParser httpParser = new HttpProtocolParser(data);
+            if (httpParser.IsHttpRequest())
+            {
+                Console.WriteLine("\t\tresource url: " + httpParser.GetResourceUrl());
+                Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(httpParser.GetResourceUrl(), ref statusCode);
+                httpParser.SetStatusCode(statusCode);
+                e.Send(httpParser.GetWrappedResponse(sendData));
+            }
             Console.WriteLine(tempString);
             Console.WriteLine("Do anything you want");
         }
