@@ -26,6 +26,7 @@ namespace SocketManager
         int m_totalBytesRead;           // counter of the total # bytes received by the server
         int m_numConnectedSockets;      // the total number of clients connected to the server 
         Semaphore m_maxNumberAcceptedClients;
+        private Logger log = Logger.GetLogger();
         #endregion
 
         #region Î¯ÍÐ&ÊÂ¼þ
@@ -87,16 +88,25 @@ namespace SocketManager
         /// Starts the server such that it is listening for incoming connection requests.    
         /// </summary>
         /// <param name="localEndPoint">The endpoint which the server will listening for conenction requests on</param>
-        public void Start(IPEndPoint localEndPoint)
+        public bool Start(IPEndPoint localEndPoint)
         {
             // create the socket which listens for incoming connections
             listenSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            listenSocket.Bind(localEndPoint);
+            try
+            {
+                listenSocket.Bind(localEndPoint);
+            }
+            catch (Exception e)
+            {
+                log.Info("Socket binding error: " + e.Message);
+                return false;
+            }
+
             // start the server with a listen backlog of 100 connections
             listenSocket.Listen(100);
-
             // post accepts on the listening socket
             StartAccept(null);
+            return true;
         }
 
 
@@ -140,7 +150,7 @@ namespace SocketManager
             Interlocked.Increment(ref m_numConnectedSockets);
             Console.WriteLine("Client connection accepted. There are {0} clients connected to the server",
                 m_numConnectedSockets);
-
+            log.Info("Client connection accepted. There are"+m_numConnectedSockets+"clients connected to the server");
             // Get the socket for the accepted client connection and put it into the 
             //ReadEventArg object user token
             SocketAsyncEventArgs readEventArgs = m_readWritePool.Pop();
@@ -249,7 +259,7 @@ namespace SocketManager
             Interlocked.Decrement(ref m_numConnectedSockets);
             m_maxNumberAcceptedClients.Release();
             Console.WriteLine("A client has been disconnected from the server. There are {0} clients connected to the server", m_numConnectedSockets);
-
+            log.Info("A client has been disconnected from the server. There are "+m_numConnectedSockets+" clients connected to the server");
             // Free the SocketAsyncEventArg so they can be reused by another client
             m_readWritePool.Push(e);
         }

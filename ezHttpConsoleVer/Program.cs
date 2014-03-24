@@ -23,7 +23,8 @@ namespace ezHttpConsoleVer
             // Start the server listening for incoming connection requests
             Server server = new Server(numConnections, receiveSize);
             server.Init();
-            server.Start(localEndPoint);
+            if(server.Start(localEndPoint) == false)
+                Console.WriteLine("Start failed");
             server.OnDataReceived += new Server.ConnetionChangedEventHandler(OnReceivedData);
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();

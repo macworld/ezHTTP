@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommonLib
+﻿namespace CommonLib
 {
     public class Logger
     {
@@ -21,7 +15,7 @@ namespace CommonLib
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("log记录功能的配置文件不存在!");
+                System.Console.WriteLine("配置文件不存在");
             }
 
             //log4net.Config.XmlConfigurator.ConfigureAndWatch();
