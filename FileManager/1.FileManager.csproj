@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="FileBuffer.cs" />
+    <Compile Include="FileSystem.cs" />
     <Compile Include="Properties\FileManagerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -54,6 +55,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>FileManagerSettings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\0.CommonLib.csproj">
+      <Project>{49821b3b-9d7a-464a-a2e3-110161386f32}</Project>
+      <Name>0.CommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
