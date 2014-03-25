@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
+using HttpParser;
 using SocketManager;
 using System.Net.Sockets;
 namespace ezHttpConsoleVer
@@ -10,25 +11,21 @@ namespace ezHttpConsoleVer
     {
         static void Main(string[] args)
         {
-            int numConnections;
-            int receiveSize;
-            IPEndPoint localEndPoint;
-            int port;
+            //SocketManagerExample();
+            HttpParserExample();
+        }
 
+        static void SocketManagerExample()
+        {
 
-            numConnections = 1024;
-            receiveSize = 64;
-            port = 8080;
-            localEndPoint = new IPEndPoint(IPAddress.Any, port);
-            // Start the server listening for incoming connection requests
-            Server server = new Server(numConnections, receiveSize);
-            server.Init();
-            server.Start(localEndPoint);
-            server.OnDataReceived += new Server.ConnetionChangedEventHandler(OnReceivedData);
+            SocketServer socketServer = new SocketServer();
+            socketServer.Init();
+            if (socketServer.Start() == false)
+                Console.WriteLine("Start failed");
+            socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedData);
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();
         }
-
         static void OnReceivedData(object sender, Socket e, byte[] data)
         {
 
@@ -39,5 +36,32 @@ namespace ezHttpConsoleVer
             Console.WriteLine("Do anything you want");
         }
 
+        static void HttpParserExample()
+        {
+
+            SocketServer socketServer = new SocketServer();
+            socketServer.Init();
+            if (socketServer.Start() == false)
+                Console.WriteLine("Start failed");
+            socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedHttpReq);
+            Console.WriteLine("Press any key to terminate the server process....");
+            Console.ReadKey();
+        }
+        static void OnReceivedHttpReq(object sender, Socket e, byte[] data)
+        {
+
+
+            data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
+            int statusCode = 0;
+            HttpProtocolParser httpParser = new HttpProtocolParser(data);
+            if (httpParser.IsHttpRequest())
+            {
+                Console.WriteLine("\t\tresource url: " + httpParser.GetResourceUrl());
+                Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(httpParser.GetResourceUrl(), ref statusCode);
+                httpParser.SetStatusCode(statusCode);
+                e.Send(httpParser.GetWrappedResponse(sendData));
+            }
+
+        }
     }
 }
