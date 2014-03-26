@@ -26,7 +26,7 @@ namespace ezHttpConsoleVer
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();
         }
-        static void OnReceivedData(object sender, Socket e, byte[] data)
+        static void OnReceivedData(object sender, AsyncUserToken token, byte[] data)
         {
 
             data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
@@ -47,19 +47,19 @@ namespace ezHttpConsoleVer
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();
         }
-        static void OnReceivedHttpReq(object sender, Socket e, byte[] data)
+        static void OnReceivedHttpReq(object sender, AsyncUserToken token, byte[] data)
         {
 
 
             data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
             int statusCode = 0;
-            HttpProtocolParser httpParser = new HttpProtocolParser(data);
-            if (httpParser.IsHttpRequest())
+            token.HttpParser.SetRawData(data);
+            if (token.HttpParser.IsHttpRequest())
             {
-                Console.WriteLine("\t\tresource url: " + httpParser.GetResourceUrl());
-                Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(httpParser.GetResourceUrl(), ref statusCode);
-                httpParser.SetStatusCode(statusCode);
-                e.Send(httpParser.GetWrappedResponse(sendData));
+                Console.WriteLine("\t\tresource url: " + token.HttpParser.GetResourceUrl());
+                Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(token.HttpParser.GetResourceUrl(), ref statusCode);
+                token.HttpParser.SetStatusCode(statusCode);
+                token.Socket.Send(token.HttpParser.GetWrappedResponse(sendData));
             }
 
         }
