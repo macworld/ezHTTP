@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using CommonLib;
+using HttpParser;
+
 
 namespace SocketManager
 {
@@ -30,7 +32,7 @@ namespace SocketManager
         #endregion
 
         #region Î¯ÍÐ&ÊÂ¼þ
-        public delegate void ConnetionChangedEventHandler(Object sender, Socket skt, byte[] rawdata);
+        public delegate void ConnetionChangedEventHandler(Object sender, AsyncUserToken token, byte[] rawdata);
         public event ConnetionChangedEventHandler OnDataReceived;
         #endregion
 
@@ -76,13 +78,19 @@ namespace SocketManager
 
             // preallocate pool of SocketAsyncEventArgs objects
             SocketAsyncEventArgs readWriteEventArg;
+            AsyncUserToken asyncUserToken;
+            HttpProtocolParser httpParser;
 
             for (int i = 0; i < m_numConnections; i++)
             {
                 //Pre-allocate a set of reusable SocketAsyncEventArgs
                 readWriteEventArg = new SocketAsyncEventArgs();
+                httpParser = new HttpProtocolParser();
+                asyncUserToken = new AsyncUserToken();
+                asyncUserToken.HttpParser = httpParser;
                 readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-                readWriteEventArg.UserToken = new AsyncUserToken();
+
+                readWriteEventArg.UserToken = asyncUserToken;
 
                 // assign a byte buffer from the buffer pool to the SocketAsyncEventArg object
                 m_bufferManager.SetBuffer(readWriteEventArg);
@@ -224,7 +232,7 @@ namespace SocketManager
                 
 
                 if (OnDataReceived != null)
-                    OnDataReceived(this, token.Socket, e.Buffer.SubArray(e.Offset, e.BytesTransferred));
+                    OnDataReceived(this, token, e.Buffer.SubArray(e.Offset, e.BytesTransferred));
                 bool willRaiseEvent = token.Socket.ReceiveAsync(e);
                 if (!willRaiseEvent)
                 {

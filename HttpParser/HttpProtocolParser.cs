@@ -10,17 +10,25 @@ namespace HttpParser
     public class HttpProtocolParser
     {
         Byte[] rawData;
-        String context;
         Hashtable headers;  
         Hashtable parameters;
         String rawUrl;
         int statusCode;
         long chunkSize;
 
+        public HttpProtocolParser()
+        {
+
+        }
+
         public HttpProtocolParser(Byte[] rawData)
         {
             this.rawData = rawData;
-            this.context = Encoding.ASCII.GetString(rawData);
+        }
+
+        public void SetRawData(Byte[] rawData)
+        {
+            this.rawData = rawData;
         }
 
         public String QueryString(String query)
@@ -44,7 +52,8 @@ namespace HttpParser
         public bool IsHttpRequest()
         {
             bool isLegal = false;
-            String[] applDataLines = this.context.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            String context = Encoding.ASCII.GetString(this.rawData);
+            String[] applDataLines = context.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             String[] firstLineWords = applDataLines[0].Split(new String[] { " " }, StringSplitOptions.None);
 
             if (firstLineWords[0] == "GET")
