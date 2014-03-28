@@ -55,6 +55,10 @@
       <Project>{49821b3b-9d7a-464a-a2e3-110161386f32}</Project>
       <Name>0.CommonLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HttpParser\3.HttpParser.csproj">
+      <Project>{140d5902-82f4-40c7-ac4f-8d501c241c6b}</Project>
+      <Name>3.HttpParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
