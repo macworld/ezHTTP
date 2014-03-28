@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="FileBuffer.cs" />
     <Compile Include="FileSystem.cs" />
+    <Compile Include="FileWatcher.cs" />
     <Compile Include="Properties\FileManagerSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
