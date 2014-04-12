@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
+using FileManager;
 using HttpParser;
 using SocketManager;
 using System.Net.Sockets;
@@ -41,9 +42,19 @@ namespace ezHttpConsoleVer
 
             SocketServer socketServer = new SocketServer();
             socketServer.Init();
+            FileBuffer FB = FileBuffer.GetInstance();
+            FB.Run();
             if (socketServer.Start() == false)
                 Console.WriteLine("Start failed");
             socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedHttpReq);
+            Console.WriteLine("Press any key to STOP the server process....");
+            Console.ReadKey();
+            socketServer.Stop();
+            FB.Stop();
+            Console.WriteLine("Press any key to RESTART the server process....");
+            Console.ReadKey();
+            FB.Run();
+            socketServer.Start();
             Console.WriteLine("Press any key to terminate the server process....");
             Console.ReadKey();
         }

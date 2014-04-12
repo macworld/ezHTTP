@@ -29,12 +29,18 @@ namespace SocketManager
         int m_numConnectedSockets;      // the total number of clients connected to the server 
         Semaphore m_maxNumberAcceptedClients;
         private Logger log = Logger.GetLogger();
+        private bool stop = true;
         #endregion
 
         #region 委托&事件
         public delegate void ConnetionChangedEventHandler(Object sender, AsyncUserToken token, byte[] rawdata);
         public event ConnetionChangedEventHandler OnDataReceived;
         #endregion
+
+        public int ConnetionNum 
+        {
+            get { return m_numConnections; }
+        }
 
         /// <summary>
         /// 根据传入参数建立一个一个未初始化的SocketServer实例，调用Init方法来初始化，调用Start开始监听端口 
@@ -122,7 +128,8 @@ namespace SocketManager
             // start the server with a listen backlog of 100 connections
             listenSocket.Listen(100);
             // post accepts on the listening socket
-            StartAccept(null);
+            stop = false;
+            StartAccept(null);   
             return true;
         }
 
@@ -137,6 +144,18 @@ namespace SocketManager
             else
                 return Start(new IPEndPoint(IPAddress.Any, Properties.SocketManager.Default.ListenPort));
         }
+
+        /// <summary>
+        /// 停止监听端口
+        /// </summary>
+        /// <returns></returns>
+        public bool Stop()
+        {
+            //listenSocket.Shutdown(SocketShutdown.Both);
+            listenSocket.Close();
+            stop = true;
+            return true;
+        }
         /// <summary>
         /// Begins an operation to accept a connection request from the client 
         /// </summary>
@@ -144,6 +163,7 @@ namespace SocketManager
         /// server's listening socket</param>
         public void StartAccept(SocketAsyncEventArgs acceptEventArg)
         {
+            if (stop) return;
             if (acceptEventArg == null)
             {
                 acceptEventArg = new SocketAsyncEventArgs();
@@ -222,6 +242,11 @@ namespace SocketManager
         /// </summary>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
+            if (stop)
+            {
+                CloseClientSocket(e);
+                return;
+            }
             // check if the remote host closed the connection
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
@@ -252,7 +277,7 @@ namespace SocketManager
         /// <param name="e"></param>
         private void ProcessSend(SocketAsyncEventArgs e)
         {
-            if (e.SocketError == SocketError.Success)
+            if (e.SocketError == SocketError.Success && stop == false)
             {
                 // done echoing data back to the client
                 AsyncUserToken token = (AsyncUserToken)e.UserToken;
