@@ -75,6 +75,10 @@ namespace FileManager
             else
             {
                 long fileOffset=0;
+                if (fileLengthDictionary.ContainsKey(url))
+                {
+                    return false;
+                }
                 LruList.AddFirst(url);
                 fileLengthDictionary.Add(url, fileLength);
                 string urlPages = "";  
