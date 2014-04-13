@@ -26,9 +26,29 @@
             return interlog;
         }
 
-        public void Info(string msg)
+        public void Debug(string debug)
         {
-            log.Info(msg);
+            log.Debug(debug);
+        }
+
+        public void Info(string info)
+        {
+            log.Info(info);
+        }
+
+        public void Error(string err)
+        {
+            log.Error(err);
+        }
+
+        public void Warn(string warn)
+        {
+            log.Warn(warn);
+        }
+
+        public void Fatal(string fatal)
+        {
+            log.Fatal(fatal);
         }
     }
 }
