@@ -1,8 +1,135 @@
-﻿<Window x:Class="ezHttp.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Name="window" mc:Ignorable="d" x:Class="wpfAppTest.MainWindow"
+        Title="MainWindow" Height="565.283" Width="696.597" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke">
+    <Grid Margin="0,0,2,-3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="422*"/>
+            <ColumnDefinition Width="253*"/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="23.677,16.086,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe UI" Height="54.414" FontSize="40" Foreground="#FF3E3E3E" HorizontalAlignment="Left" Width="250.2" Grid.Column="1"><Run Language="zh-cn" Text="WebServerer"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="273.877,41.983,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="377.443" Foreground="#FF727272" FontFamily="Segoe UI" Grid.Column="1" FontSize="16" Grid.ColumnSpan="2"><Run Language="zh-cn" Text="BETA   "/></TextBlock>
+        <TextBlock x:Name="text_home" Grid.Column="1" HorizontalAlignment="Left" Margin="23.677,80.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="41.837" FontSize="18.667" 
+                   PreviewMouseLeftButtonUp="OnHomeClicked" MouseEnter="text_home_MouseEnter" MouseLeave="text_home_MouseLeave">
+            <TextBlock.OpacityMask>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </TextBlock.OpacityMask><Run Language="zh-cn" Text="Home"/></TextBlock>
+        <TextBlock x:Name="text_log" Grid.Column="1" HorizontalAlignment="Left" Margin="115.054,80.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="41.837" FontSize="18.667" PreviewMouseLeftButtonUp="OnLogClicked" MouseEnter="text_log_MouseEnter" MouseLeave="text_log_MouseLeave">
+            <TextBlock.OpacityMask>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </TextBlock.OpacityMask><Run Language="zh-cn" Text="Log"/></TextBlock>
+        <TextBlock x:Name="text_settings" Grid.Column="1" HorizontalAlignment="Left" Margin="192.054,80.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="41.837" FontSize="18.667" PreviewMouseLeftButtonUp="OnSettingsClicked" MouseEnter="text_settings_MouseEnter" MouseLeave="text_settings_MouseLeave">
+            <TextBlock.OpacityMask>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </TextBlock.OpacityMask><Run Language="zh-cn" Text="Settings"/></TextBlock>
+        <Grid x:Name="contents" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="632.643" Grid.Column="1" Margin="23.677,122.337,0,0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="632.643" d:IsHidden="True">
+                <Grid HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="632.643" RenderTransformOrigin="0.721,0.582">
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,45.297,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
+                    <TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="124.609,44.863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                        <TextBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                                <GradientStop Color="#FFABADB3" Offset="0.05"/>
+                                <GradientStop Color="#FFE2E3EA" Offset="0.07"/>
+                                <GradientStop Color="#FF858585" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,120.316,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
+                    <TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="124.609,119.882,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                        <TextBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                                <GradientStop Color="#FFABADB3" Offset="0.05"/>
+                                <GradientStop Color="#FFE2E3EA" Offset="0.07"/>
+                                <GradientStop Color="#FF858585" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,200.145,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
+                    <TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="124.609,200.145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                        <TextBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                                <GradientStop Color="#FFABADB3" Offset="0.05"/>
+                                <GradientStop Color="#FFE2E3EA" Offset="0.07"/>
+                                <GradientStop Color="#FF858585" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,200.579,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,44.863,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
+                    <TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="450.872,44.863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                        <TextBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                                <GradientStop Color="#FFABADB3" Offset="0.05"/>
+                                <GradientStop Color="#FFE2E3EA" Offset="0.07"/>
+                                <GradientStop Color="#FF858585" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,121.393,0,0" Height="37.084" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Buffer for each Connection"/></TextBlock>
+                    <TextBox x:Name="textbox_buffersize" HorizontalAlignment="Left" Height="23.808" Margin="450.872,121.393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                        <TextBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                                <GradientStop Color="#FFABADB3" Offset="0.05"/>
+                                <GradientStop Color="#FFE2E3EA" Offset="0.07"/>
+                                <GradientStop Color="#FF858585" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+
+                    <TextBlock x:Name="text_apply"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,290.448,0,0" Height="23.374" Width="55.827" Foreground="#FFB4B4B4" FontSize="18.667"
+                               MouseEnter="text_apply_MouseEnter" MouseLeave="text_apply_MouseLeave" MouseLeftButtonUp="text_apply_MouseLeftButtonUp"><Run Language="zh-cn" Text="Ap"/><Run Language="zh-cn" Text="pl"/><Run Language="zh-cn" Text="y"/></TextBlock>
+
+                    <TextBlock x:Name="text_deafult" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="450.872,294.072,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="18.667"
+                               MouseEnter="text_deafult_MouseEnter" MouseLeave="text_deafult_MouseLeave" MouseLeftButtonUp="text_deafult_MouseLeftButtonUp"><Run Language="zh-cn" Text="Default"/><LineBreak/><Run Language="zh-cn"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,332.145,-33.932,0" Height="23.374" Width="340.312" Foreground="#FF111111" FontSize="10.667"><Run Language="zh-cn" Text="Your "/><Run Language="zh-cn" Text="changes will take effect when you restart the service."/></TextBlock>
+                    <TextBlock x:Name="text_remind" HorizontalAlignment="Left" Margin="0,12.026,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449.147" Foreground="#FFF73B3B"/>
+                    <CheckBox x:Name="checkbox_ipv6" Content="" HorizontalAlignment="Left" Margin="450.872,200.145,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.321,0.321" Checked="checkbox_ipv6_Checked" Unchecked="checkbox_ipv6_Checked"/>
+
+                </Grid>
+            </UserControl>
+            <UserControl x:Name="content_home" Height="387.5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="632.643" d:IsHidden="True">
+                <Grid HorizontalAlignment="Left" Height="393.5" VerticalAlignment="Top" Width="635.943" Margin="0,0,-3.3,-6">
+                    <TextBlock x:Name="text_start" HorizontalAlignment="Left" Margin="462.95,342.663,0,10" TextWrapping="Wrap" VerticalAlignment="Center" Height="40.837" Width="150.55" Foreground="#FF39B8FF" 
+        				FontSize="21.333" FontWeight="Bold" PreviewMouseLeftButtonUp="OnStartClicked" TextAlignment="Center" FontFamily="Microsoft JhengHei" 
+        				MouseEnter="text_start_MouseEnter" MouseLeave="text_start_MouseLeave"  RenderTransformOrigin="-0.048,0.347" Cursor="Hand" >
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Color="#FFC3C3C3" Opacity="0.3"/>
+                        </TextBlock.Effect><Run Language="zh-cn" Text="Start"/></TextBlock>
+                </Grid>
+            </UserControl>
+            <UserControl x:Name="content_log" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="632.643">
+                <Grid HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="632.643">
+                    <ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="245" VerticalAlignment="Bottom" Width="632.643" Margin="0,0,0,132.5" BorderBrush="{x:Null}"/>
+                    <TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="378.872,318.072,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="18.667"
+        				MouseEnter="text_clear_MouseEnter"  MouseLeave="text_clear_MouseLeave"  MouseLeftButtonUp="text_clear_MouseLeftButtonUp"><Run Language="zh-cn" Text="Clear"/></TextBlock>
+                    <TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="469.09,318.072,0,0" Height="23.374" Width="120.553" Foreground="#FF111111" FontSize="18.667"
+        				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="View Logfile"/></TextBlock>
+                </Grid>
+            </UserControl>
+        </Grid>
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="#FFCDCECF" HorizontalAlignment="Left" Height="1" Margin="23.677,117.337,0,0" Stretch="Fill" VerticalAlignment="Top" Width="630.5" Grid.ColumnSpan="2">
+            <Path.Stroke>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FFE2DCDC" Offset="1"/>
+                </LinearGradientBrush>
+            </Path.Stroke>
+        </Path>
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="#FFCDCECF" HorizontalAlignment="Left" Height="1" Margin="10,384.337,0,0" Stretch="Fill" VerticalAlignment="Top" Width="630.5" Grid.ColumnSpan="2">
+            <Path.Stroke>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FFE2DCDC" Offset="1"/>
+                </LinearGradientBrush>
+            </Path.Stroke>
+        </Path>
     </Grid>
 </Window>

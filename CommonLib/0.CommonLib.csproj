@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteExtension.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Log\Logger.cs" />
     <Compile Include="Properties\CommonLibSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -55,6 +55,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Log\Log.config" />
     <None Include="Properties\CommonLibSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>CommonLibSettings.Designer.cs</LastGenOutput>

@@ -53,7 +53,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\FileManagerSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>FileManagerSettings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
