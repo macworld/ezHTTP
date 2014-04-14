@@ -50,7 +50,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\HttpParserSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>HttpParserSettings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>

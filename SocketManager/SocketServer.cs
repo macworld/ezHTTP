@@ -28,7 +28,7 @@ namespace SocketManager
         int m_totalBytesRead;           // counter of the total # bytes received by the server
         int m_numConnectedSockets;      // the total number of clients connected to the server 
         Semaphore m_maxNumberAcceptedClients;
-        private Logger log = Logger.GetLogger();
+        private Logger log = new Logger("AppLogger");
         private bool stop = true;
         #endregion
 

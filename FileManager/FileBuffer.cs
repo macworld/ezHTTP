@@ -28,7 +28,7 @@ namespace FileManager
         LinkedList<string> LruList;//to relize LRU 
         Dictionary<string, long> fileLengthDictionary;//store the length of the file store in the buffer
 
-        private static FileBuffer localFileBuffer=new FileBuffer();
+        private static FileBuffer localFileBuffer = new FileBuffer();
         private object LockSSConflict = new object();  //used to avoid save & save conflict;
         private object LockRDConflict = new object();  //used to avoid read & delete conflict
         private FileBuffer()
@@ -49,15 +49,23 @@ namespace FileManager
         /// </summary>
         public void Run()
         {
-            if(!isRun)
+            if (!isRun)
             {
                 //run fileWatcher
+                totalPage = Properties.FileManagerSettings.Default.MaxPageNum;
+                bufferSize = pageSize * totalPage;
+                totalFreeSpace = bufferSize;
+                memoryBuffer = new Byte[bufferSize];
                 FileWatcher.getInstance().Run();
+                FileSystem.GetInstance().ResetSeverDirectory();
+                Logger log = new Logger("AppLogger");
+                log.Info("FileBuffer & FileWatcher start to run");
                 isRun = true;
             }
             else
             {
-                Logger.GetLogger().Info("FileBuffer has already run");
+                Logger log = new Logger("AppLogger");
+                log.Info("FileBuffer has already run");
             }
         }
         /// <summary>
@@ -67,15 +75,18 @@ namespace FileManager
         /// </summary>
         public void Stop()
         {
-            if(isRun)
+            if (isRun)
             {
                 isRun = false;
                 FileWatcher.getInstance().Stop();
+                Logger log = new Logger("AppLogger");
+                log.Info("FileBuffer & FileWatcher was stopped");
                 clear();
             }
             else
             {
-                Logger.GetLogger().Info("FileBuffer is not running.It can't be stopped");
+                Logger log = new Logger("AppLogger");
+                log.Info("FileBuffer is not running.It can't be stopped");
             }
         }
         /// <summary>
@@ -90,47 +101,46 @@ namespace FileManager
             LruList.Clear();
             fileLengthDictionary.Clear();
         }
-       
+
         public static FileBuffer GetInstance()
         {
             return localFileBuffer;
         }
-        
+
         /// <summary>
         /// when a new file is read from local file system, the function will be called to store it in the buffer
         /// </summary>
         /// <returns></returns>
-        private bool SaveFile(Byte[] fileByteStream,string url)
+        private bool SaveFile(Byte[] fileByteStream, string url)
         {
             long fileLength = fileByteStream.Length;
-            if(totalFreeSpace<fileLength)
+            if (totalFreeSpace < fileLength)
             {
-                if(fileLength>bufferSize) 
+                if (fileLength > bufferSize)
                 {
                     //Logger.GetLogger().Info("The file is to big to buffer it");
                     return false;
                 }
                 //Logger.GetLogger().Info("There is not enough space in the fileBuffer.We'll try to release some older file");
-                while(totalFreeSpace<fileLength)
+                while (totalFreeSpace < fileLength)
                 {
-                    if(!ReleaseFileLRU(fileLength)) // while there is no file to realse ,return false
+                    if (!ReleaseFileLRU(fileLength)) // while there is no file to realse ,return false
                     {
                         return false;
                     }
-                 }
+                }
                 SaveFile(fileByteStream, url);//when there are enough buffer space after delete
             }
             else
-            {   
-                long fileOffset=0;
+            {
+                long fileOffset = 0;
                 lock (LockSSConflict) // used to avoid the conflic of saving the same  
                 {
-                    if(fileLengthDictionary.ContainsKey(url))
+                    if (fileLengthDictionary.ContainsKey(url))
                     {
                         return false;
                     }
                     LruList.AddFirst(url);
-                    fileLengthDictionary.Add(url, fileLength);
                     string urlPages = "";
                     int pageNum = 0;
                     while (fileOffset < fileLength)
@@ -173,11 +183,12 @@ namespace FileManager
                         totalFreeSpace -= pageSize;
                     }
                     urlToPageDic.Add(url, urlPages);//added to the dictionnary which is used as a page table
+                    fileLengthDictionary.Add(url, fileLength);//add to the dictionnary when it has been saved in the memory
                 }
             }
             return true;
         }
-  
+
         /// <summary>
         /// used to release files in the buffer to get more free space
         /// the strategy now is  LRU
@@ -185,14 +196,15 @@ namespace FileManager
         /// <returns></returns>
         private bool ReleaseFileLRU(long fileLength)
         {
-            if(LruList.Count!=0)
+            if (LruList.Count != 0)
             {
                 string url = LruList.Last.Value;
-                return RemoveFileInBuffer(url,fileLength);
+                return RemoveFileInBuffer(url, fileLength);
             }
             else
             {
-                Logger.GetLogger().Info("There is no file to release");
+                Logger log = new Logger("AppLogger");
+                log.Warn("There is no file to release");
                 return false;
             }
         }
@@ -204,8 +216,8 @@ namespace FileManager
         private bool RemoveFileInBuffer(string url)
         {
             lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
-            { 
-                if(!LruList.Remove(url))//when the url is not in the LruList
+            {
+                if (!LruList.Remove(url))//when the url is not in the LruList
                 {
                     return false;
                 }
@@ -229,11 +241,11 @@ namespace FileManager
         /// <param name="url"></param>
         /// <param name="fileLength"></param>
         /// <returns></returns>
-        private bool RemoveFileInBuffer(string url,long fileLength)
+        private bool RemoveFileInBuffer(string url, long fileLength)
         {
             lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
             {
-                if (totalFreeSpace>fileLength | !LruList.Remove(url))//when the url is not in the LruList
+                if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
                 {
                     return false;
                 }
@@ -259,32 +271,32 @@ namespace FileManager
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public Byte[] readFile(string url,ref int statusCode)
+        public Byte[] readFile(string url, ref int statusCode)
         {
-            if(!isRun)
+            if (!isRun)
             {
-                Logger.GetLogger().Info("please run the filebuffer before reading file");
+                Logger log = new Logger("AppLogger");
+                log.Error("please run the filebuffer before reading file");
                 return null;
             }
-            if(!isUrlEffective(url))
+            if (!isUrlEffective(url))
             {
                 statusCode = 404;
-                Logger.GetLogger().Info(url+" is not an effective url");
                 return null;
             }
-            if(fileLengthDictionary.ContainsKey(url))//if the file was exsited in filebuffer
+            if (fileLengthDictionary.ContainsKey(url))//if the file was exsited in filebuffer
             {
-                lock(LockRDConflict)
+                lock (LockRDConflict)
                 {
-                    if(!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
-                        //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
+                    if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
+                    //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
                     {
                         Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
                         SaveFile(readBuffer, url);//save the file to fileBuffer in memory
                         statusCode = 200;
                         return readBuffer;
                     }
-                    long fileLength = fileLengthDictionary[url];    
+                    long fileLength = fileLengthDictionary[url];
                     Byte[] fileByteStream = new Byte[fileLength];
                     string pageString = urlToPageDic[url];
                     string[] pageNumStr = pageString.Split(',');
@@ -313,7 +325,7 @@ namespace FileManager
             }
             else //when the file is not in fileBuffer,read the file from local fileSystem
             {
-                Byte[] readBuffer=FileSystem.GetInstance().readFile(url);
+                Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
                 if (readBuffer.Length != 0) //in test,we find that some file's lengths could be zero 
                 {
                     SaveFile(readBuffer, url);//save the file to fileBuffer in memory
@@ -325,11 +337,11 @@ namespace FileManager
 
         private bool isUrlEffective(string url)
         {
-            if(url.Contains("..")) 
+            if (url.Contains(".."))
             {
                 return false;
             }
-            string path=Properties.FileManagerSettings.Default.ServerDirectory + url;
+            string path = FileSystem.GetInstance().ServerDiretory + url;
             return File.Exists(path);
         }
         /// <summary>
@@ -338,7 +350,7 @@ namespace FileManager
         /// <param name="url"></param>
         internal void OnFileChanged(string url)
         {
-            if(urlToPageDic.ContainsKey(url))
+            if (urlToPageDic.ContainsKey(url))
             {
                 RemoveFileInBuffer(url);
             }
@@ -346,7 +358,7 @@ namespace FileManager
 
         internal void OnFileOrDirectoryDeleted(string url)
         {
-            if(urlToPageDic.ContainsKey(url))//when a file was deleted
+            if (urlToPageDic.ContainsKey(url))//when a file was deleted
             {
                 RemoveFileInBuffer(url);
                 return;
@@ -354,19 +366,20 @@ namespace FileManager
             else
             {
                 //when a directory was deleted or the file deleted was not included in the buffer
-               string[] keys=new string[urlToPageDic.Count];
-               urlToPageDic.Keys.CopyTo(keys,0);
-               foreach (string key in keys)
-               {
-                   //when the forward component was same with url ,it was in the directory
-                   if (key.Substring(0, url.Length) == url)
-                   {
-                       RemoveFileInBuffer(key);
-                   }
-               }
-                
+                string[] keys = new string[urlToPageDic.Count];
+                urlToPageDic.Keys.CopyTo(keys, 0);
+                foreach (string key in keys)
+                {
+                    //when the forward component was same with url ,it was in the directory
+                    if (key.Substring(0, url.Length) == url)
+                    {
+                        RemoveFileInBuffer(key);
+                    }
+                }
+
             }
-           
+
         }
+
     }
 }

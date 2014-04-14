@@ -10,8 +10,8 @@ namespace FileManager
     public class FileSystem
     {
         //used to set the workspace of the webserver
-        string ServerDiretory;
-        
+        internal string ServerDiretory;
+
         private static FileSystem localFileSystem = new FileSystem();
         private FileSystem()
         {
@@ -37,16 +37,21 @@ namespace FileManager
             return File.Exists(localPath);
         }
 
-        public byte[]  readFile(string url) //?此处关于readBuffer的回收问题
+        public byte[] readFile(string url) //?此处关于readBuffer的回收问题
         {
             string localPath = ServerDiretory + url;
-            FileInfo targetFile=new FileInfo(localPath);
-            long fileLength=targetFile.Length;
+            FileInfo targetFile = new FileInfo(localPath);
+            long fileLength = targetFile.Length;
             FileStream readIn = new FileStream(localPath, FileMode.Open, FileAccess.Read);
             Byte[] readBuffer = new byte[fileLength];
             readIn.Read(readBuffer, 0, (int)fileLength);
             return readBuffer;
         }
-        
+
+        public void ResetSeverDirectory()
+        {
+            this.ServerDiretory = Properties.FileManagerSettings.Default.ServerDirectory;
+        }
+
     }
 }

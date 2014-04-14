@@ -57,10 +57,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BizLogic\4.BizLogic.csproj">
-      <Project>{78c54a56-d3cc-42de-8342-b98ec484de95}</Project>
-      <Name>4.BizLogic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonLib\0.CommonLib.csproj">
       <Project>{49821b3b-9d7a-464a-a2e3-110161386f32}</Project>
       <Name>0.CommonLib</Name>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Log
+namespace CommonLib
 {
     public class WindowsMessageQueueAppender : log4net.Appender.AppenderSkeleton
     {
@@ -56,7 +56,7 @@ namespace Log
                 this.WindowClass = null; // "" 和null是不一样的
             }
 
-            if (this.WindowName == null || this.WindowName =="")
+            if (this.WindowName == null || this.WindowName == "")
             {
                 throw new ArgumentNullException("要查找的窗口窗口名不能为空.");
             }
@@ -80,7 +80,7 @@ namespace Log
             }
             catch (Exception ex)
             {
-                ErrorHandler.Error("无法通过消息队列向目的窗口发送日志消息",ex,log4net.Core.ErrorCode.WriteFailure);
+                ErrorHandler.Error("无法通过消息队列向目的窗口发送日志消息", ex, log4net.Core.ErrorCode.WriteFailure);
             }
         }
 
@@ -99,17 +99,18 @@ namespace Log
             data.cbData = msg.Length * 2;
             data.dwData = (IntPtr)loggingEvent.Level.Value;
             data.Message = msg;
-            
+
 
             SendMessage(FindWindow(this.WindowClass, this.WindowName), WM_COPYDATA, new IntPtr(0), ref data);
         }
 
         #region 发送窗口消息用到的数据结构和API函数
-        public  struct COPYDATASTRUCT
+        public struct COPYDATASTRUCT
         {
             public IntPtr dwData;
             public int cbData;
-            [MarshalAs(UnmanagedType.LPWStr)] public string Message;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string Message;
         }
 
         //声明 API 函数 
