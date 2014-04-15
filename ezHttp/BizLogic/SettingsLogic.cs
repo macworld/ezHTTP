@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 
-namespace wpfAppTest
+namespace ezHttp
 {
     /// <summary>
     /// this file was the logical part of settings

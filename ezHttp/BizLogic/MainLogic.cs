@@ -7,23 +7,32 @@ using HttpParser;
 using SocketManager;
 using System.Net.Sockets;
 using CommonLib;
-namespace wpfAppTest
+namespace ezHttp
 {
     class MainLogic
     {
-        static SocketServer socketServer = new SocketServer();
-        static FileBuffer fileBuffer = FileBuffer.GetInstance();
-        internal static void StartService()
+        public static SocketServer socketServer = new SocketServer();
+        public static FileBuffer fileBuffer = FileBuffer.GetInstance();
+
+        internal static bool Started
         {
+            get { return socketServer.Strated; }
+        }
+
+        internal static bool StartService()
+        {
+            socketServer = new SocketServer();
             socketServer.Init();
             if (socketServer.Start() == false)
             {
                 Logger log=new Logger("AppLogger");
                 log.Fatal("Filed to start service");
+                return false;
             }
                 
             socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedHttpReq);
             fileBuffer.Run();
+            return true;;
         }
 
         internal static void RestartService()
@@ -36,15 +45,6 @@ namespace wpfAppTest
         {
             socketServer.Stop();
             fileBuffer.Stop();
-        }
-        static void OnReceivedData(object sender, AsyncUserToken token, byte[] data)
-        {
-
-            data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
-            string tempString = Encoding.UTF8.GetString(data, 0, data.Length);
-
-            Console.WriteLine(tempString);
-            Console.WriteLine("Do anything you want");
         }
         static void OnReceivedHttpReq(object sender, AsyncUserToken token, byte[] data)
         {

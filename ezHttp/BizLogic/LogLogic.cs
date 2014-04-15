@@ -19,7 +19,7 @@ using System.Timers;
 using CommonLib;
 using Microsoft.Win32;
 
-namespace wpfAppTest
+namespace ezHttp
 {
     public partial class MainWindow : Window
     {

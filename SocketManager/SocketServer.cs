@@ -39,8 +39,19 @@ namespace SocketManager
 
         public int ConnetionNum 
         {
+            get { return m_numConnectedSockets; }
+        }
+
+        public int MaxConnections
+        {
             get { return m_numConnections; }
         }
+        public bool Strated
+        {
+            get { return !stop; }
+        }
+             
+
 
         /// <summary>
         /// 根据传入参数建立一个一个未初始化的SocketServer实例，调用Init方法来初始化，调用Start开始监听端口 
@@ -86,6 +97,7 @@ namespace SocketManager
             SocketAsyncEventArgs readWriteEventArg;
             AsyncUserToken asyncUserToken;
             HttpProtocolParser httpParser;
+            m_numConnectedSockets = 0;
 
             for (int i = 0; i < m_numConnections; i++)
             {
@@ -121,7 +133,7 @@ namespace SocketManager
             }
             catch (Exception e)
             {
-                log.Info("Socket binding error: " + e.Message);
+                log.Fatal("Socket binding error: " + e.Message);
                 return false;
             }
 
@@ -151,7 +163,7 @@ namespace SocketManager
         /// <returns></returns>
         public bool Stop()
         {
-            //listenSocket.Shutdown(SocketShutdown.Both);
+            if (stop) return true;
             listenSocket.Close();
             stop = true;
             return true;
@@ -194,9 +206,8 @@ namespace SocketManager
 
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
+            if(stop) return;
             Interlocked.Increment(ref m_numConnectedSockets);
-            Console.WriteLine("Client connection accepted. There are {0} clients connected to the server",
-                m_numConnectedSockets);
             log.Info("Client connection accepted. There are"+m_numConnectedSockets+"clients connected to the server");
             // Get the socket for the accepted client connection and put it into the 
             //ReadEventArg object user token
@@ -310,7 +321,6 @@ namespace SocketManager
             // decrement the counter keeping track of the total number of clients connected to the server
             Interlocked.Decrement(ref m_numConnectedSockets);
             m_maxNumberAcceptedClients.Release();
-            Console.WriteLine("A client has been disconnected from the server. There are {0} clients connected to the server", m_numConnectedSockets);
             log.Info("A client has been disconnected from the server. There are "+m_numConnectedSockets+" clients connected to the server");
             // Free the SocketAsyncEventArg so they can be reused by another client
             m_readWritePool.Push(e);

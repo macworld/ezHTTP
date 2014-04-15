@@ -31,6 +31,14 @@ namespace FileManager
         private static FileBuffer localFileBuffer = new FileBuffer();
         private object LockSSConflict = new object();  //used to avoid save & save conflict;
         private object LockRDConflict = new object();  //used to avoid read & delete conflict
+
+        /// <summary>
+        /// return buffer usage percent
+        /// </summary>
+        public int BufferUsage
+        {
+            get { return 100*(bufferSize-totalFreeSpace)/bufferSize; }
+        }
         private FileBuffer()
         {
             pageSize = Properties.FileManagerSettings.Default.PageSize;
