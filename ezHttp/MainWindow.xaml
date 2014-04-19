@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Name="window" mc:Ignorable="d" x:Class="ezHttp.MainWindow"
         xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"     
-        Title="MainWindow" Height="506.947" Width="755.373" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke" Background="#FFEFEFEF" Icon="Ezhttp.ico">
+        Title="EasyWebSever (Beta)" Height="500.947" Width="755.373" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke" Background="#FFEFEFEF" Icon="Ezhttp.ico" ResizeMode="CanMinimize">
     <Grid Margin="0,0,2,-3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -16,9 +16,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-            <UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643" d:IsHidden="True">
+            <UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643">
                 <Grid HorizontalAlignment="Left" Height="353.172" VerticalAlignment="Top" Width="632.643" RenderTransformOrigin="0.721,0.582">
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,45.297,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,45.297,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
                     <TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="124.609,44.863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
@@ -28,7 +28,7 @@
                             </LinearGradientBrush>
                         </TextBox.BorderBrush>
                     </TextBox>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,120.316,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,120.316,0,0" Height="23.374" Width="137.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
                     <TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="124.609,119.882,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
@@ -38,7 +38,7 @@
                             </LinearGradientBrush>
                         </TextBox.BorderBrush>
                     </TextBox>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,200.145,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,200.145,0,0" Height="23.374" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
                     <TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="124.609,200.145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
@@ -48,9 +48,9 @@
                             </LinearGradientBrush>
                         </TextBox.BorderBrush>
                     </TextBox>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,200.579,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,44.863,0,0" Height="23.374" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
-                    <TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="450.872,44.863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,200.579,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,120.316,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
+                    <TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="489.872,120.316,-17.669,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
                                 <GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -59,8 +59,8 @@
                             </LinearGradientBrush>
                         </TextBox.BorderBrush>
                     </TextBox>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,121.393,0,0" Height="37.084" Width="98.218" Foreground="#FF111111"><Run Language="zh-cn" Text="Buffer for each Connection"/></TextBlock>
-                    <TextBox x:Name="textbox_buffersize" HorizontalAlignment="Left" Height="23.808" Margin="450.872,121.393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,44.863,0,0" Height="37.084" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Home Page"/></TextBlock>
+                    <TextBox x:Name="textbox_homedic" HorizontalAlignment="Left" Height="23.808" Margin="489.872,44.863,-17.669,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
                                 <GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -70,14 +70,13 @@
                         </TextBox.BorderBrush>
                     </TextBox>
 
-                    <TextBlock x:Name="text_apply"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,290.448,0,0" Height="26.998" Width="55.827" Foreground="#FFB4B4B4" FontSize="18.667"
+                    <TextBlock x:Name="text_apply"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="489.872,294.426,0,0" Height="26.998" Width="67.827" Foreground="#FFB4B4B4" FontSize="21.333"
                                MouseEnter="text_apply_MouseEnter" MouseLeave="text_apply_MouseLeave" MouseLeftButtonUp="text_apply_MouseLeftButtonUp"><Run Language="zh-cn" Text="Ap"/><Run Language="zh-cn" Text="pl"/><Run Language="zh-cn" Text="y"/></TextBlock>
 
-                    <TextBlock x:Name="text_deafult" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="450.872,294.072,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="18.667"
+                    <TextBlock x:Name="text_deafult" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="592.357,294.072,-43.169,0" Height="23.374" Width="83.455" Foreground="#FF111111" FontSize="21.333"
                                MouseEnter="text_deafult_MouseEnter" MouseLeave="text_deafult_MouseLeave" MouseLeftButtonUp="text_deafult_MouseLeftButtonUp"><Run Language="zh-cn" Text="Default"/><LineBreak/><Run Language="zh-cn"/></TextBlock>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="326.263,332.145,-33.932,0" Height="23.374" Width="340.312" Foreground="#FF111111" FontSize="10.667"><Run Language="zh-cn" Text="Your "/><Run Language="zh-cn" Text="changes will take effect when you restart the service."/></TextBlock>
                     <TextBlock x:Name="text_remind" HorizontalAlignment="Left" Margin="0,12.026,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449.147" Foreground="#FFF73B3B"/>
-                    <CheckBox x:Name="checkbox_ipv6" Content="" HorizontalAlignment="Left" Margin="450.872,200.145,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.321,0.321" Checked="checkbox_ipv6_Checked" Unchecked="checkbox_ipv6_Checked"/>
+                    <CheckBox x:Name="checkbox_ipv6" Content="" HorizontalAlignment="Left" Margin="489.872,200.145,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.321,0.321" Checked="checkbox_ipv6_Checked" Unchecked="checkbox_ipv6_Checked"/>
 
                 </Grid>
             </UserControl>
@@ -133,13 +132,13 @@
                     <Rectangle HorizontalAlignment="Left" Height="59.337" Margin="506.96,280,-44.084,-19.001" Stroke="White" VerticalAlignment="Top" Width="173.067" StrokeThickness="4"/>
                 </Grid>
             </UserControl>
-            <UserControl x:Name="content_log" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="694.143" Grid.ColumnSpan="2" Margin="0,0,-61.5,-25.39">
+            <UserControl x:Name="content_log" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="694.143" Grid.ColumnSpan="2" Margin="0,0,-61.5,-25.39" d:IsHidden="True">
                 <Grid HorizontalAlignment="Left" Height="336.664" VerticalAlignment="Top" Width="701.643" Margin="0,0,-69,0">
-                    <ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="245.667" VerticalAlignment="Bottom" Width="680.31" Margin="-5,0,0,85.068" BorderBrush="{x:Null}" Background="White"/>
-                    <TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="378.872,297.929,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="18.667"
+                    <ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="245.667" VerticalAlignment="Bottom" Width="680.31" Margin="-2,0,0,85.068" BorderBrush="{x:Null}" Background="White"/>
+                    <TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="620.592,285.052,0,0" Height="38.735" Width="57.718" Foreground="Black" FontSize="21.333"
         				MouseEnter="text_clear_MouseEnter"  MouseLeave="text_clear_MouseLeave"  MouseLeftButtonUp="text_clear_MouseLeftButtonUp"><Run Language="zh-cn" Text="Clear"/></TextBlock>
-                    <TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="477.09,297.929,0,0" Height="23.374" Width="120.553" Foreground="#FF111111" FontSize="18.667"
-        				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="View Logfile"/></TextBlock>
+                    <TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="493.59,285.052,0,0" Height="51.408" Width="99.437" Foreground="#FF111111" FontSize="21.333"
+        				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="OpenFile"/></TextBlock>
                 </Grid>
             </UserControl>
         </Grid>

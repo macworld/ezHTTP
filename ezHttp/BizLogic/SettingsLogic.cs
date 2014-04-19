@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 
 namespace ezHttp
@@ -29,7 +20,7 @@ namespace ezHttp
                 FileManager.Properties.FileManagerSettings.Default.MaxPageNum / 1024 / 1024 + "MB";
             textbox_listenport.Text = Convert.ToString(SocketManager.Properties.SocketManager.Default.ListenPort);
             textbox_maxconnection.Text = Convert.ToString(SocketManager.Properties.SocketManager.Default.MaxConnections);
-            textbox_buffersize.Text = Convert.ToString(SocketManager.Properties.SocketManager.Default.ReceiveBufferSize) + "Byte";
+            textbox_homedic.Text = Convert.ToString(HttpParser.Properties.HttpParserSettings.Default.WelcomeFilePath);
             checkbox_ipv6.IsChecked = SocketManager.Properties.SocketManager.Default.IPv6;
             SetUnChanged();
         }
@@ -75,7 +66,7 @@ namespace ezHttp
             string FileBuffer = textbox_filebuffer.Text;
             string ListenPort = textbox_listenport.Text;
             string MaxConnection = textbox_maxconnection.Text;
-            string BufferSize = textbox_buffersize.Text;
+            string HomeDic = textbox_homedic.Text;
             text_remind.Text = "";
             //detect wheather the input is effective
             if (!Directory.Exists(ServerDirectory))
@@ -107,11 +98,12 @@ namespace ezHttp
 
             SocketManager.Properties.SocketManager.Default.ListenPort = Convert.ToInt32(ListenPort);
             SocketManager.Properties.SocketManager.Default.MaxConnections = Convert.ToInt32(MaxConnection);
-            BufferSize = BufferSize.Substring(0, BufferSize.Length - 4);
-            SocketManager.Properties.SocketManager.Default.ReceiveBufferSize = Convert.ToInt32(BufferSize);
             SocketManager.Properties.SocketManager.Default.IPv6 = Convert.ToBoolean(checkbox_ipv6.IsChecked);
             SocketManager.Properties.SocketManager.Default.Save();
-            text_remind.Text = "Your changes has successed.";
+
+            HttpParser.Properties.HttpParserSettings.Default.WelcomeFilePath = HomeDic;
+            HttpParser.Properties.HttpParserSettings.Default.Save();
+            text_remind.Text = "Settings have been saved, restart service to take effect!";
             SetUnChanged();
         }
 
