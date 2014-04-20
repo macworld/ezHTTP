@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -33,7 +34,11 @@ namespace ezHttp
         bool isSettingsChanged = false;
         ChartViewModel StateCharts = new ChartViewModel();
         private ChartInfo cpuinfo,bufferinfo,coninfo;
-        private PerformanceCounter cpuCounter,memCounter;
+        private PerformanceCounter cpuCounter;
+        private bool cpuWarn = false, fileWarn = false, connectWarn = false;
+        private int fadeCount = -1;
+        private Storyboard aboutShow, aboutFade;
+        private bool isAboutShowing = false, isAboutFading = false,isAboutMouseLeave = true;
         public MainWindow()
         {
             InitializeComponent();
@@ -47,20 +52,63 @@ namespace ezHttp
             cpuCounter.CounterName = "% Processor Time";
             cpuCounter.InstanceName = "_Total";
 
+            aboutFade =  (Storyboard)this.Resources["FadeAbout"];
+            aboutShow = (Storyboard)this.Resources["ShowAbout"];
+            aboutShow.Completed += OnAboutShowComplete;
+            aboutFade.Completed += ChangeAboutName;
+
+
             OnHomeClicked(null, null);
             //inital the settings
             InitSettings();
             //add hook to receive log message
-            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            Loaded += MainWindow_Loaded;
             DispatcherTimer stateTimer = new DispatcherTimer();
             stateTimer.Interval = TimeSpan.FromSeconds(0.5);
-            stateTimer.Tick += new EventHandler(StatetimerTick);//更新状态信息
+            stateTimer.Tick += StatetimerTick;//更新状态信息
             stateTimer.Start();
+        }
+
+        private void UpdateStateText(string state, SolidColorBrush color)
+        {
+            Storyboard showState;
+            showState = (Storyboard)this.Resources["ShowState"];
+            StatusText.Foreground = color;
+            StatusText.Text = state;
+            showState.Begin();
+            fadeCount = 6;
+        }
+
+        private void ButtonTurnGreen()
+        {
+            Storyboard tg;
+            tg = (Storyboard)this.Resources["turnGreen"];
+            tg.Begin();
+        }
+
+        private void ButtonTurnOrange()
+        {
+            Storyboard to;
+            to = (Storyboard)this.Resources["turnOrange"];
+            to.Begin();
+        }
+        private void FadeState()
+        {
+            Storyboard fadeState;
+            fadeState = (Storyboard)this.Resources["FadeState"];
+            fadeState.Begin();
+            fadeCount = -1;
         }
 
         private void StatetimerTick(object sender, EventArgs e)
         {
+            Logger log = new Logger("AppLogger");
             cpuinfo.Number = (int)cpuCounter.NextValue();
+
+
+            if (fadeCount > 0) fadeCount--;
+            else if (fadeCount == 0)  FadeState();
+
             if (MainLogic.Started)
             {
                 coninfo.Number = (100*MainLogic.socketServer.ConnetionNum)/MainLogic.socketServer.MaxConnections;
@@ -72,6 +120,38 @@ namespace ezHttp
                 bufferinfo.Number = 0;
             }
 
+            if (cpuinfo.Number > 80 && cpuWarn == false)
+            {
+                log.Warn("Warning: High CPU Usage !");
+                UpdateStateText("Warning: High CPU Usage !", new SolidColorBrush(stop_color));
+                cpuWarn = true;
+            }
+            if (cpuinfo.Number < 40 && cpuWarn == true)
+            {
+                cpuWarn = false;
+            }
+
+            if (bufferinfo.Number > 80 && fileWarn == false)
+            {
+                log.Warn("Warning: High FileBuffer Usage !");
+                UpdateStateText("Warning: High FileBuffer Usage !", new SolidColorBrush(stop_color));
+                fileWarn = true;
+            }
+            if (bufferinfo.Number < 40 && fileWarn == true)
+            {
+                fileWarn = false;
+            }
+
+            if (coninfo.Number > 80 && connectWarn == false)
+            {
+                log.Warn("Warning: High Connection Pool Usage !");
+                UpdateStateText("Warning: High Connection Pool Usage !", new SolidColorBrush(stop_color));
+                connectWarn = true;
+            }
+            if (coninfo.Number < 40 && connectWarn == true)
+            {
+                connectWarn = false;
+            }
         } 
         private void ResetTag()
         {
@@ -114,19 +194,26 @@ namespace ezHttp
 
         private void OnStartClicked(object sender, MouseButtonEventArgs e)
         {
-
             if (MainLogic.Started)
             {
                 MainLogic.StopService();
                 text_start.Foreground = new SolidColorBrush(start_color);
                 text_start.Text = "Start";
+                ButtonTurnGreen();
+                UpdateStateText("EasyWebServer Stoped", new SolidColorBrush(stop_color));
             }
             else
             {
                 if (MainLogic.StartService())
                 {
+                    UpdateStateText("EasyWebServer Started",new SolidColorBrush(start_color));
                     text_start.Foreground = new SolidColorBrush(stop_color);
                     text_start.Text = "Stop";
+                    ButtonTurnOrange();
+                }
+                else
+                {
+                    UpdateStateText("Start failed, please get more information on log", new SolidColorBrush(Color.FromRgb(0xaa, 0, 0)));
                 }
             }
         }
@@ -166,13 +253,72 @@ namespace ezHttp
 
         private void text_start_MouseEnter(object sender, MouseEventArgs e)
         {
-            text_start.FontWeight = FontWeights.Bold;
+            Storyboard tg, to;
+            tg = (Storyboard) this.Resources["turnGreen"];
+            to = (Storyboard) this.Resources["turnOrange"];
+            if (MainLogic.Started) to.Begin();
+            else tg.Begin();
         }
 
         private void text_start_MouseLeave(object sender, MouseEventArgs e)
         {
-            text_start.FontWeight = FontWeights.Normal;
+            Storyboard tg, to;
+            tg = (Storyboard)this.Resources["turnGreen"];
+            to = (Storyboard)this.Resources["turnOrange"];
+            if (MainLogic.Started) to.Stop();
+            else tg.Stop();
         }
+
+        private void ChangeAboutName(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            switch (rnd.Next(0, 5))
+            {
+
+                case 0:
+                    Author.Text = "Macworld";
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(81,0,49));
+                    break;
+                case 1:
+                    Author.Text = "Wu jin";
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(37, 94, 145));
+                    break;
+                case 2:
+                    Author.Text = "Yuan XinChen";
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(0xcc, 0x66, 00));
+                    break;
+                case 3:
+                    Author.Text = "Zhao WeiFeng";
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(40, 0x66, 40));
+                    break;
+                case 4:
+                    Author.Text = "Zhuang Jia";
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(9, 13, 99));
+                    break;
+            }
+            isAboutFading = false;
+        }
+
+        private void OnAboutShowComplete(object sender, EventArgs e)
+        {
+            isAboutShowing = false;
+            if (isAboutMouseLeave && isAboutFading == false) aboutFade.Begin();
+        }
+        private void AboutButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            isAboutMouseLeave = false;
+            if (isAboutFading || isAboutShowing) return;
+            aboutShow.Begin();
+            isAboutShowing = true;
+        }
+        private void AboutButton_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            isAboutMouseLeave = true;
+            if (isAboutShowing || isAboutFading) return;
+            aboutFade.Begin();
+            isAboutFading = true;
+        }
+
 
     }
 }

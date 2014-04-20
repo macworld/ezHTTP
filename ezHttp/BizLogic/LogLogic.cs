@@ -43,7 +43,8 @@ namespace ezHttp
         }
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            (PresentationSource.FromVisual(this) as HwndSource).AddHook(new HwndSourceHook(this.WndProc));
+            var a = (PresentationSource.FromVisual(this) as HwndSource);
+            a.AddHook(new HwndSourceHook(this.WndProc));
         }
 
         IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -54,7 +55,6 @@ namespace ezHttp
 
                 COPYDATASTRUCT data = (COPYDATASTRUCT)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
                 TextBlock tempBlock = new TextBlock();
-                
                 string str = "";
                 for (int i = 0; i < data.cbData / 2; i++)
                     str += data.Message[i];
@@ -63,19 +63,19 @@ namespace ezHttp
                 switch(type)
                 {
                     case LOG_DEBUG:
-                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(50,50,50));
+                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(20,80,100));
                         break;
                     case LOG_ERROR:
-                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(224, 119, 119));
+                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(0xaa, 00, 00));
                         break;
                     case LOG_FATAL:
-                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(224, 119, 119));
+                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(0x66, 00, 119));
                         break;
                     case LOG_INFO:
-                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(138, 201, 238));
+                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(0, 0x66, 0));
                         break;
                     case LOG_WARN:
-                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(224, 194, 19));
+                        tempBlock.Foreground = new SolidColorBrush(Color.FromRgb(0xcc, 0x66, 00));
                         break;
                     default:
                         break;
@@ -94,7 +94,6 @@ namespace ezHttp
                 {
                     listbox_log.Items.RemoveAt(0);
                 }
-              
             }
             return hwnd;
         }
@@ -102,11 +101,7 @@ namespace ezHttp
 
         private void text_clear_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure to clear the log", "Remind", MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
-            {
                 listbox_log.Items.Clear();
-            }
         }
 
         private void text_clear_MouseEnter(object sender, MouseEventArgs e)
@@ -133,7 +128,6 @@ namespace ezHttp
         {
 
             System.Diagnostics.Process.Start("NOTEPAD.EXE", "log.txt");
- 
         }
     }
 }

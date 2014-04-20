@@ -26,13 +26,12 @@ namespace ezHttp
             if (socketServer.Start() == false)
             {
                 Logger log=new Logger("AppLogger");
-                log.Fatal("Filed to start service");
                 return false;
             }
                 
             socketServer.OnDataReceived += new SocketServer.ConnetionChangedEventHandler(OnReceivedHttpReq);
             fileBuffer.Run();
-            return true;;
+            return true;
         }
 
         internal static void RestartService()

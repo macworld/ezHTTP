@@ -67,13 +67,13 @@ namespace FileManager
                 FileWatcher.getInstance().Run();
                 FileSystem.GetInstance().ResetSeverDirectory();
                 Logger log = new Logger("AppLogger");
-                log.Info("FileBuffer & FileWatcher start to run");
+                log.Info("FileBuffer Module started");
                 isRun = true;
             }
             else
             {
                 Logger log = new Logger("AppLogger");
-                log.Info("FileBuffer has already run");
+                log.Info("FileBuffer has already started");
             }
         }
         /// <summary>
@@ -88,7 +88,7 @@ namespace FileManager
                 isRun = false;
                 FileWatcher.getInstance().Stop();
                 Logger log = new Logger("AppLogger");
-                log.Info("FileBuffer & FileWatcher was stopped");
+                log.Info("FileBuffer Module stopped");
                 clear();
             }
             else
@@ -192,6 +192,8 @@ namespace FileManager
                     }
                     urlToPageDic.Add(url, urlPages);//added to the dictionnary which is used as a page table
                     fileLengthDictionary.Add(url, fileLength);//add to the dictionnary when it has been saved in the memory
+                    Logger log = new Logger("AppLogger");
+                    log.Debug("Add file: " + url + " in buffer");
                 }
             }
             return true;
@@ -223,6 +225,8 @@ namespace FileManager
         /// <returns>when the file is not stored in the buffer,return false</returns>
         private bool RemoveFileInBuffer(string url)
         {
+            Logger log = new Logger("AppLogger");
+            log.Debug("File changed, remove file data in buffer: "+ url);
             lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
             {
                 if (!LruList.Remove(url))//when the url is not in the LruList

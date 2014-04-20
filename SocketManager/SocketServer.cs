@@ -130,10 +130,11 @@ namespace SocketManager
             try
             {
                 listenSocket.Bind(localEndPoint);
+                log.Info("Start listening at port " + Properties.SocketManager.Default.ListenPort);
             }
             catch (Exception e)
             {
-                log.Fatal("Socket binding error: " + e.Message);
+                log.Error("Socket binding error: " + e.Message);
                 return false;
             }
 
@@ -208,7 +209,7 @@ namespace SocketManager
         {
             if(stop) return;
             Interlocked.Increment(ref m_numConnectedSockets);
-            log.Info("Client connection accepted. There are"+m_numConnectedSockets+"clients connected to the server");
+           // log.Info("Client connection accepted. There are"+m_numConnectedSockets+"clients connected to the server");
             // Get the socket for the accepted client connection and put it into the 
             //ReadEventArg object user token
             SocketAsyncEventArgs readEventArgs = m_readWritePool.Pop();
@@ -321,7 +322,7 @@ namespace SocketManager
             // decrement the counter keeping track of the total number of clients connected to the server
             Interlocked.Decrement(ref m_numConnectedSockets);
             m_maxNumberAcceptedClients.Release();
-            log.Info("A client has been disconnected from the server. There are "+m_numConnectedSockets+" clients connected to the server");
+            //log.Info("A client has been disconnected from the server. There are "+m_numConnectedSockets+" clients connected to the server");
             // Free the SocketAsyncEventArg so they can be reused by another client
             m_readWritePool.Push(e);
         }

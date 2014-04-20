@@ -13,13 +13,13 @@ namespace ezHttp
     public partial class MainWindow : Window
     {
         Color apply_color = Color.FromRgb(17, 17, 17);
-        Color remind_success_color = Color.FromRgb(50, 50, 150);
+        Color remind_success_color = Color.FromRgb(0x66,0x99,0x33);
         Color remind_error_color = Color.FromRgb(247, 59, 59);
         private void InitSettings()
         {
             textbox_serverDirectory.Text = FileManager.Properties.FileManagerSettings.Default.ServerDirectory;
             textbox_filebuffer.Text = FileManager.Properties.FileManagerSettings.Default.PageSize *
-                FileManager.Properties.FileManagerSettings.Default.MaxPageNum / 1024 / 1024 + "MB";
+                FileManager.Properties.FileManagerSettings.Default.MaxPageNum / 1024 / 1024 + " MB";
             textbox_listenport.Text = Convert.ToString(SocketManager.Properties.SocketManager.Default.ListenPort);
             textbox_maxconnection.Text = Convert.ToString(SocketManager.Properties.SocketManager.Default.MaxConnections);
             textbox_homedic.Text = Convert.ToString(HttpParser.Properties.HttpParserSettings.Default.WelcomeFilePath);
@@ -138,7 +138,7 @@ namespace ezHttp
         {
             if (!Directory.Exists(ServerDirectory))
             {
-                text_remind.Text = "Please Use A ServerDirectory Which Is Existed";
+                text_remind.Text = "Server Directory exist";
                 text_remind.Foreground = new SolidColorBrush(remind_error_color);
                 SetUnChanged();
                 return false;
@@ -151,11 +151,11 @@ namespace ezHttp
 
         private bool DetectFileBuffer(ref string FileBuffer)
         {
-            if (FileBuffer.Length >= 2)
+            if (FileBuffer.Length >= 3)
             {
-                if (FileBuffer.Substring(FileBuffer.Length - 2) == "MB")
+                if (FileBuffer.Substring(FileBuffer.Length - 3) == " MB")
                 {
-                    FileBuffer = FileBuffer.Substring(0, FileBuffer.Length - 2);
+                    FileBuffer = FileBuffer.Substring(0, FileBuffer.Length - 3);
                 }
                 if (Convert.ToInt32(FileBuffer) >= 4096)
                 {
@@ -185,7 +185,7 @@ namespace ezHttp
             string filepath=ServerDirectory+HomeDic;
             if(!File.Exists(filepath))
             {
-                text_remind.Text = "You should enter an existed file as home page.";
+                text_remind.Text = "HomePage doesn't exist.";
                 text_remind.Foreground = new SolidColorBrush(remind_error_color);
                 SetUnChanged();
                 return false;
@@ -208,15 +208,12 @@ namespace ezHttp
 
         private void textbox_filebuffer_GotFocus(object sender, RoutedEventArgs e)
         {
-            textbox_filebuffer.Text = textbox_filebuffer.Text.Substring(0,textbox_filebuffer.Text.Length - 2);
+            textbox_filebuffer.Text = textbox_filebuffer.Text.Substring(0,textbox_filebuffer.Text.Length - 3);
         }
 
         private void textbox_filebuffer_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (textbox_filebuffer.Text.Length >= 2 & textbox_filebuffer.Text.Substring(textbox_filebuffer.Text.Length-2)!="MB")
-            {
-                textbox_filebuffer.Text += "MB";
-            }
+            textbox_filebuffer.Text += " MB";
             
         }
         //to ensure user can only enter number

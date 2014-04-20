@@ -55,7 +55,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Log\Log.config" />
+    <None Include="Log\Log.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\CommonLibSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>CommonLibSettings.Designer.cs</LastGenOutput>
