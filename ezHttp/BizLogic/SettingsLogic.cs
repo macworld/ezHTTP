@@ -13,6 +13,8 @@ namespace ezHttp
     public partial class MainWindow : Window
     {
         Color apply_color = Color.FromRgb(17, 17, 17);
+        Color remind_success_color = Color.FromRgb(50, 50, 150);
+        Color remind_error_color = Color.FromRgb(247, 59, 59);
         private void InitSettings()
         {
             textbox_serverDirectory.Text = FileManager.Properties.FileManagerSettings.Default.ServerDirectory;
@@ -69,23 +71,24 @@ namespace ezHttp
             string HomeDic = textbox_homedic.Text;
             text_remind.Text = "";
             //detect wheather the input is effective
-            if (!Directory.Exists(ServerDirectory))
+            if(!DetectDirectory(ServerDirectory))
             {
-                text_remind.Text = "Please Use A ServerDirectory Which Is Existed";
-                SetUnChanged();
                 return;
             }
-            if (Convert.ToInt32(ListenPort) < 1024 || Convert.ToInt32(ListenPort) > 65535)
+            if(!DetectFileBuffer(ref FileBuffer))
             {
-                text_remind.Text = "The value of ListenPort Should between 1023 and 65536(not include).";
-                SetUnChanged();
                 return;
             }
-            FileBuffer = FileBuffer.Substring(0, FileBuffer.Length - 2);
-            if (Convert.ToInt32(FileBuffer) >= 4096)
+            if(!DetectPortNum(ListenPort))
             {
-                text_remind.Text = "The size of file buffer is too big.";
-                SetUnChanged();
+                return;
+            }
+            if(!DetectHomeDic(ServerDirectory,HomeDic))
+            {
+                return;
+            }
+            if(!DetectMaxConnection(MaxConnection))
+            {
                 return;
             }
             //apply the changes, user need to restart the whole application to make changes effective
@@ -104,6 +107,7 @@ namespace ezHttp
             HttpParser.Properties.HttpParserSettings.Default.WelcomeFilePath = HomeDic;
             HttpParser.Properties.HttpParserSettings.Default.Save();
             text_remind.Text = "Settings have been saved, restart service to take effect!";
+            text_remind.Foreground = new SolidColorBrush(remind_success_color);
             SetUnChanged();
         }
 
@@ -128,6 +132,106 @@ namespace ezHttp
         {
             isSettingsChanged = true;
             text_apply.Foreground = new SolidColorBrush(apply_color);
+        }
+
+        private bool DetectDirectory(string ServerDirectory)
+        {
+            if (!Directory.Exists(ServerDirectory))
+            {
+                text_remind.Text = "Please Use A ServerDirectory Which Is Existed";
+                text_remind.Foreground = new SolidColorBrush(remind_error_color);
+                SetUnChanged();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool DetectFileBuffer(ref string FileBuffer)
+        {
+            if (FileBuffer.Length >= 2)
+            {
+                if (FileBuffer.Substring(FileBuffer.Length - 2) == "MB")
+                {
+                    FileBuffer = FileBuffer.Substring(0, FileBuffer.Length - 2);
+                }
+                if (Convert.ToInt32(FileBuffer) >= 4096)
+                {
+                    text_remind.Text = "The size of file buffer should be less than 4096.";
+                    text_remind.Foreground = new SolidColorBrush(remind_error_color);
+                    SetUnChanged();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool DetectPortNum(string ListenPort)
+        {
+            if (Convert.ToInt32(ListenPort) < 1024 || Convert.ToInt32(ListenPort) > 65535)
+            {
+                text_remind.Text = "The value of ListenPort Should between 1023 and 65536(not include).";
+                text_remind.Foreground = new SolidColorBrush(remind_error_color);
+                SetUnChanged();
+                return false;
+            }
+            return true;
+        }
+
+        private bool DetectHomeDic(string ServerDirectory,string HomeDic)
+        {
+            string filepath=ServerDirectory+HomeDic;
+            if(!File.Exists(filepath))
+            {
+                text_remind.Text = "You should enter an existed file as home page.";
+                text_remind.Foreground = new SolidColorBrush(remind_error_color);
+                SetUnChanged();
+                return false;
+            }
+            return true;
+        }
+
+        private bool DetectMaxConnection(string MaxConnection)
+        {
+            if (Convert.ToInt32(MaxConnection) < 100)
+            {
+                text_remind.Text = "The Max Connection should be bigger than 100.";
+                text_remind.Foreground = new SolidColorBrush(remind_error_color);
+                SetUnChanged();
+                return false;
+            }
+            return true;
+        }
+        
+
+        private void textbox_filebuffer_GotFocus(object sender, RoutedEventArgs e)
+        {
+            textbox_filebuffer.Text = textbox_filebuffer.Text.Substring(0,textbox_filebuffer.Text.Length - 2);
+        }
+
+        private void textbox_filebuffer_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (textbox_filebuffer.Text.Length >= 2 & textbox_filebuffer.Text.Substring(textbox_filebuffer.Text.Length-2)!="MB")
+            {
+                textbox_filebuffer.Text += "MB";
+            }
+            
+        }
+        //to ensure user can only enter number
+        private void textbox_KeyDown_number(object sender, KeyEventArgs e)
+        {
+            TextBox txt = sender as TextBox;
+            //屏蔽非法按键，只能输入整数
+            if (((e.Key >= Key.D0 && e.Key <= Key.D9)) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
     }
 
