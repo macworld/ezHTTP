@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Name="window" mc:Ignorable="d" x:Class="ezHttp.MainWindow"
         xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"     
-        Title="EasyWebSever (Beta)" Height="500.947" Width="755.373" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke" Background="#FFEFEFEF" Icon="Ezhttp.ico" ResizeMode="CanMinimize">
+        Title="EasyWebSever (Beta)" Height="500.947" Width="755.373" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke" Background="White" Icon="Ezhttp.ico" ResizeMode="CanMinimize">
 	<Window.Resources>
 		<Storyboard x:Key="ShowState">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="StatusText">
@@ -18,18 +18,32 @@
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 		<Storyboard x:Key="turnGreen" RepeatBehavior="Forever" AutoReverse="False">
-			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="start_rectangle">
-				<SplineColorKeyFrame KeyTime="0:0:0.5" Value="#FF70AD57"/>
-				<EasingColorKeyFrame KeyTime="0:0:1.3" Value="#FF70AD57"/>
-                <SplineColorKeyFrame KeyTime="0:0:2" Value="#FFEFEFEF"/>
-            </ColorAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="start_rectangle">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="0.6"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="text_start">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2.5" Value="0.6"/>
+			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 		<Storyboard x:Key="turnOrange" RepeatBehavior="Forever" AutoReverse="False">
-			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="start_rectangle">
-				<EasingColorKeyFrame KeyTime="0:0:0.5" Value="#FFF3993E"/>
-				<EasingColorKeyFrame KeyTime="0:0:1.3" Value="#FFF3993E"/>
-                <EasingColorKeyFrame KeyTime="0:0:1.8" Value="#FFEFEFEF"/>
-			</ColorAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="start_rectangle">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.6"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="text_start">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.6"/>
+			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 		<Storyboard x:Key="ShowAbout">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="AboutBak">
@@ -73,16 +87,16 @@
             <ColumnDefinition Width="253*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="StatusText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="29.666,396.987,0,0" Grid.Column="1" Height="26.46" Width="430.647" Foreground="#FF4F4F4F" FontSize="16"/>
-        <Grid x:Name="contents" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643" Grid.Column="1" Margin="23.677,102.837,0,0" Grid.ColumnSpan="2" d:IsHidden="True">
+        <TextBlock x:Name="StatusText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="27.665,408.987,0,0" Grid.Column="1" Height="26.46" Width="430.647" Foreground="#FF4F4F4F" FontSize="16"/>
+        <Grid x:Name="contents" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="656.32" Grid.Column="1" Margin="0,102.837,0,0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
             	<ColumnDefinition/>
             	<ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
         	<UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643" d:IsHidden="True">
         		<Grid HorizontalAlignment="Left" Height="353.172" VerticalAlignment="Top" Width="632.643" RenderTransformOrigin="0.721,0.582">
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,45.297,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
-        			<TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="124.609,44.863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,32.797,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
+        			<TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="147.109,32.363,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -91,8 +105,8 @@
         					</LinearGradientBrush>
         				</TextBox.BorderBrush>
         			</TextBox>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,120.316,0,0" Height="23.374" Width="137.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
-        			<TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="124.609,119.882,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" GotFocus="textbox_filebuffer_GotFocus" LostFocus="textbox_filebuffer_LostFocus" KeyDown="textbox_KeyDown_number" MaxLength="6">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,116.816,0,0" Height="23.374" Width="137.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
+        			<TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="147.109,116.382,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" GotFocus="textbox_filebuffer_GotFocus" LostFocus="textbox_filebuffer_LostFocus" KeyDown="textbox_KeyDown_number" MaxLength="6">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -101,8 +115,8 @@
         					</LinearGradientBrush>
         				</TextBox.BorderBrush>
         			</TextBox>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,200.145,0,0" Height="23.374" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
-        			<TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="124.609,200.145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" KeyDown="textbox_KeyDown_number" MaxLength="5">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,205.645,0,0" Height="23.374" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
+        			<TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="147.109,205.645,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" KeyDown="textbox_KeyDown_number" MaxLength="5">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -111,9 +125,9 @@
         					</LinearGradientBrush>
         				</TextBox.BorderBrush>
         			</TextBox>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,200.579,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,120.316,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
-        			<TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="489.872,120.316,-17.669,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="5" KeyDown="textbox_KeyDown_number" >
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,206.079,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,116.816,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
+        			<TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="530.372,116.816,-58.169,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="5" KeyDown="textbox_KeyDown_number" >
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -122,8 +136,8 @@
         					</LinearGradientBrush>
         				</TextBox.BorderBrush>
         			</TextBox>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="365.263,44.863,0,0" Height="37.084" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Home Page"/></TextBlock>
-        			<TextBox x:Name="textbox_homedic" HorizontalAlignment="Left" Height="23.808" Margin="489.872,44.863,-17.669,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,32.363,0,0" Height="37.084" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Home Page"/></TextBlock>
+        			<TextBox x:Name="textbox_homedic" HorizontalAlignment="Left" Height="23.808" Margin="530.372,32.363,-58.169,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -133,26 +147,26 @@
         				</TextBox.BorderBrush>
         			</TextBox>
 
-        			<TextBlock x:Name="text_apply"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="489.872,294.426,0,0" Height="26.998" Width="67.827" Foreground="#FFB4B4B4" FontSize="21.333"
+        			<TextBlock x:Name="text_apply"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="530.372,294.426,0,0" Height="26.998" Width="67.827" Foreground="#FFB4B4B4" FontSize="21.333"
         				MouseEnter="text_apply_MouseEnter" MouseLeave="text_apply_MouseLeave" MouseLeftButtonUp="text_apply_MouseLeftButtonUp"><Run Language="zh-cn" Text="Ap"/><Run Language="zh-cn" Text="pl"/><Run Language="zh-cn" Text="y"/></TextBlock>
 
-        			<TextBlock x:Name="text_deafult" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="592.357,294.072,-43.169,0" Height="23.374" Width="83.455" Foreground="#FF111111" FontSize="21.333"
+        			<TextBlock x:Name="text_deafult" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="632.857,294.072,-83.669,0" Height="23.374" Width="83.455" Foreground="#FF111111" FontSize="21.333"
         				MouseEnter="text_deafult_MouseEnter" MouseLeave="text_deafult_MouseLeave" MouseLeftButtonUp="text_deafult_MouseLeftButtonUp"><Run Language="zh-cn" Text="Default"/><LineBreak/><Run Language="zh-cn"/></TextBlock>
-        			<TextBlock x:Name="text_remind" HorizontalAlignment="Left" Margin="0,12.026,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449.147" Foreground="#FFF73B3B"/>
-        			<CheckBox x:Name="checkbox_ipv6" Content="" HorizontalAlignment="Left" Margin="489.872,200.145,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.321,0.321" Checked="checkbox_ipv6_Checked" Unchecked="checkbox_ipv6_Checked"/>
+        			<TextBlock x:Name="text_remind" HorizontalAlignment="Left" Margin="21.99,5.526,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449.147" Foreground="#FFF73B3B"/>
+        			<CheckBox x:Name="checkbox_ipv6" Content="" HorizontalAlignment="Left" Margin="530.372,208.645,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.321,0.321" Checked="checkbox_ipv6_Checked" Unchecked="checkbox_ipv6_Checked"/>
 
         		</Grid>
         	</UserControl>
-        	<UserControl x:Name="content_home" Height="320.336" VerticalAlignment="Top" HorizontalAlignment="Left" Width="632.643" d:IsHidden="True">
+        	<UserControl x:Name="content_home" Height="320.336" VerticalAlignment="Top" HorizontalAlignment="Left" Width="661.143" Margin="-28.5,0,0,0">
         		<Grid HorizontalAlignment="Left" Height="320.336" VerticalAlignment="Top" Width="635.943" Margin="0,0,-3.3,0">
-        			<Rectangle x:Name="start_rectangle" HorizontalAlignment="Left" Height="59.337" Margin="506.96,280,-44.084,-19.001" Stroke="White" VerticalAlignment="Top" Width="173.067" StrokeThickness="2" />
-        			<StackPanel HorizontalAlignment="Left" Height="365" VerticalAlignment="Top" Width="766" Orientation="Horizontal" Margin="-45.5,-84,-84.557,0">
+        			<Rectangle x:Name="start_rectangle" HorizontalAlignment="Left" Height="50.337" Margin="608.799,288.671,-95.923,-18.672" Stroke="#FF70AD47" VerticalAlignment="Top" Width="123.067" StrokeThickness="2" Opacity="0.595" />
+        			<StackPanel HorizontalAlignment="Left" Height="365" VerticalAlignment="Top" Width="766" Orientation="Horizontal" Margin="13,-89,-143.057,0">
         				<chart:RadialGaugeChart
         					Style="{StaticResource MinimalGaugeChart}"
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource CpuColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFEFEFEF">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Foreground="#FFB5ECB5">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="Cpu"
@@ -166,7 +180,7 @@
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource MemColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFEFEFEF">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFFFFFFF" Foreground="#FFBCD4EA">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="Memory"
@@ -180,7 +194,7 @@
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource ConnectionColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFEFEFEF">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFFFFFFF" Foreground="#FFE6A1D5">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="ConnectionPool"
@@ -190,22 +204,24 @@
         					</chart:RadialGaugeChart.Series>
         				</chart:RadialGaugeChart>
         			</StackPanel>
-        			<TextBlock x:Name="text_start" HorizontalAlignment="Left" Margin="510.96,283.559,-38.751,-19.001" TextWrapping="Wrap" VerticalAlignment="Center" Height="55.778" Width="163.734" Foreground="#FF70AD47" 
+        			<TextBlock x:Name="Cpu" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="110,215.5,0,0" Height="27.46" Width="96.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="CPU Usage"/></TextBlock>
+        			<TextBlock x:Name="FileBuffer" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="340,215.5,0,0" Height="27.46" Width="127.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="File Buffer Usage"/></TextBlock>
+        			<TextBlock x:Name="Connect" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="593,215.5,-84.95,0" Height="27.46" Width="127.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="Connection Pool"/></TextBlock>
+        			<TextBlock x:Name="text_start" HorizontalAlignment="Left" Margin="611.98,289.396,-93.771,-15.838" TextWrapping="Wrap" VerticalAlignment="Center" Height="46.778" Width="117.734" Foreground="#FF70AD47" 
         				FontSize="32" PreviewMouseLeftButtonUp="OnStartClicked" TextAlignment="Center" 
-        				MouseEnter="text_start_MouseEnter" MouseLeave="text_start_MouseLeave"  RenderTransformOrigin="-0.048,0.347" Cursor="Hand" ><Run Language="zh-cn" Text="Start"/></TextBlock>
+        				MouseEnter="text_start_MouseEnter" MouseLeave="text_start_MouseLeave"  RenderTransformOrigin="-0.048,0.347" Cursor="Hand" Opacity="0.6" ><Run Language="zh-cn" Text="Start"/></TextBlock>
         		</Grid>
         	</UserControl>
         	<UserControl x:Name="content_log" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="694.143" Grid.ColumnSpan="2" Margin="0,0,-61.5,-25.39" d:IsHidden="True">
         		<Grid HorizontalAlignment="Left" Height="336.664" VerticalAlignment="Top" Width="701.643" Margin="0,0,-69,0">
-        			<ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="254" VerticalAlignment="Bottom" Width="680.31" Margin="-2,0,0,81" BorderBrush="{x:Null}" Background="#FFF3F3F3"/>
-        			<TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="620.592,294.052,0,0" Height="38.735" Width="57.718" Foreground="Black" FontSize="21.333"
+        			<ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="263" VerticalAlignment="Bottom" Width="689.31" Margin="15.999,0,-3.666,72" BorderBrush="{x:Null}" Background="White"/>
+        			<TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="649.592,294.052,-5.667,0" Height="38.735" Width="57.718" Foreground="Black" FontSize="21.333"
         				MouseEnter="text_clear_MouseEnter"  MouseLeave="text_clear_MouseLeave"  MouseLeftButtonUp="text_clear_MouseLeftButtonUp"><Run Language="zh-cn" Text="Clear"/></TextBlock>
-        			<TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="493.59,294.052,0,-8.796" Height="51.408" Width="99.437" Foreground="#FF111111" FontSize="21.333"
+        			<TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="522.59,294.052,0,-8.796" Height="51.408" Width="99.437" Foreground="#FF111111" FontSize="21.333"
         				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="OpenFile"/></TextBlock>
         		</Grid>
         	</UserControl>
         </Grid>
-        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" HorizontalAlignment="Left" Height="1" Margin="23.677,364.837,0,0" Stretch="Fill" VerticalAlignment="Top" Width="681.5" Grid.ColumnSpan="2" Fill="White" Stroke="White" d:IsHidden="True"/>
         <TextBlock x:Name="text_settings" Grid.Column="1" HorizontalAlignment="Left" Margin="186.054,62.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnSettingsClicked" MouseEnter="text_settings_MouseEnter" MouseLeave="text_settings_MouseLeave" d:IsHidden="True"><TextBlock.OpacityMask>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TextBlock.OpacityMask><Run Language="zh-cn" Text="Settings"/></TextBlock>
@@ -218,9 +234,9 @@
         <TextBlock x:Name="text_log" Grid.Column="1" HorizontalAlignment="Left" Margin="109.054,62.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnLogClicked" MouseEnter="text_log_MouseEnter" MouseLeave="text_log_MouseLeave"><TextBlock.OpacityMask>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TextBlock.OpacityMask><Run Language="zh-cn" Text="Log"/></TextBlock>
-        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="White" HorizontalAlignment="Left" Height="1" Margin="17.677,97.837,0,0" Stretch="Fill" VerticalAlignment="Top" Width="687.5" Grid.ColumnSpan="2" Stroke="White"/>
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="#FFB4B4B4" HorizontalAlignment="Left" Height="1" Margin="17.677,97.837,0,0" Stretch="Fill" VerticalAlignment="Top" Width="687.5" Grid.ColumnSpan="2" Stroke="#FFE4E4E4"/>
         <TextBlock x:Name="AboutButton" HorizontalAlignment="Left" Margin="206.631,28.483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="59.338" Foreground="#FF727272" FontFamily="Segoe UI" Grid.Column="2" FontSize="16" MouseEnter="AboutButton_MouseEnter" MouseLeave="AboutButton_MouseLeave"><Run Language="zh-cn" Text="About"/></TextBlock>
-        <Rectangle x:Name="AboutBak" Grid.Column="2" Fill="#FF510031" HorizontalAlignment="Left" Height="23.766" Margin="258.906,64.444,-107.771,0" VerticalAlignment="Top" Width="124.834" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+        <Rectangle x:Name="AboutBak" Grid.Column="2" Fill="#FF510031" HorizontalAlignment="Left" Height="23.766" Margin="259.572,64.444,-108.437,0" VerticalAlignment="Top" Width="124.834" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
         	<Rectangle.RenderTransform>
         		<TransformGroup>
         			<ScaleTransform/>
@@ -230,7 +246,7 @@
         		</TransformGroup>
         	</Rectangle.RenderTransform>
         </Rectangle>
-        <TextBlock x:Name="Author" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="7.937,64.277,-101.395,0" Foreground="White" Height="23.266" Width="93.458" RenderTransformOrigin="0.5,0.5" FontSize="14.667"><TextBlock.RenderTransform>
+        <TextBlock x:Name="Author" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="7.5,65.277,-108.437,0" Foreground="White" Height="23.266" Width="100.937" RenderTransformOrigin="0.5,0.5" FontSize="13.333"><TextBlock.RenderTransform>
         		<TransformGroup>
         			<ScaleTransform/>
         			<SkewTransform/>
@@ -238,5 +254,6 @@
         			<TranslateTransform/>
         		</TransformGroup>
         	</TextBlock.RenderTransform><Run Language="zh-cn" Text="Macworld"/></TextBlock>
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" HorizontalAlignment="Left" Height="1" Margin="23.677,379.337,0,0" Stretch="Fill" VerticalAlignment="Top" Width="681.5" Grid.ColumnSpan="2" Fill="#FFB4B4B4" Stroke="#FFE4E4E4"/>
     </Grid>
 </Window>

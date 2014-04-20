@@ -30,7 +30,7 @@ namespace ezHttp
         Color clicked_color = Color.FromRgb(0, 0, 0);
         Color default_color = Color.FromRgb(124, 124, 124);
         Color start_color = Color.FromRgb(112,173,71);
-        Color stop_color = Color.FromRgb(243, 153, 62);
+        Color stop_color = Color.FromRgb(0xcc, 0x66, 62);
         bool isSettingsChanged = false;
         ChartViewModel StateCharts = new ChartViewModel();
         private ChartInfo cpuinfo,bufferinfo,coninfo;
@@ -84,6 +84,7 @@ namespace ezHttp
             Storyboard tg;
             tg = (Storyboard)this.Resources["turnGreen"];
             tg.Begin();
+            start_rectangle.Stroke = new SolidColorBrush(start_color);
         }
 
         private void ButtonTurnOrange()
@@ -91,7 +92,9 @@ namespace ezHttp
             Storyboard to;
             to = (Storyboard)this.Resources["turnOrange"];
             to.Begin();
+            start_rectangle.Stroke = new SolidColorBrush(stop_color);
         }
+
         private void FadeState()
         {
             Storyboard fadeState;
