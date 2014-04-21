@@ -144,7 +144,7 @@ namespace FileManager
                 long fileOffset = 0;
                 lock (LockSSConflict) // used to avoid the conflic of saving the same  
                 {
-                    if (fileLengthDictionary.ContainsKey(url))
+                    if (fileLengthDictionary.ContainsKey(url) || totalFreeSpace < fileLength)//avoid the error causing by other saving action
                     {
                         return false;
                     }
