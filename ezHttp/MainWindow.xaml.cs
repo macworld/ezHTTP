@@ -292,7 +292,7 @@ namespace ezHttp
                     break;
                 case 3:
                     Author.Text = "Zhao WeiFeng";
-                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(40, 0x66, 40));
+                    AboutBak.Fill = new SolidColorBrush(Color.FromRgb(0x33, 0x49, 0x5e));
                     break;
                 case 4:
                     Author.Text = "Zhuang Jia";
@@ -322,6 +322,20 @@ namespace ezHttp
             isAboutFading = true;
         }
 
+        private void DragBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+        	if (e.ChangedButton == MouseButton.Left)
+        this.DragMove();
+        }
 
+        private void Minimize_btn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+        	WindowState = WindowState.Minimized;
+        }
+
+        private void Close_btn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+        	this.Close();
+        }
     }
 }
