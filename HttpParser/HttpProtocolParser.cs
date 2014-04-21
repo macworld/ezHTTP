@@ -97,12 +97,15 @@ namespace HttpParser
             DateTime dateTime = DateTime.Now;
             if (this.statusCode == 200)
             {
-                stringBuilder.Append("HTTP/1.1 200OK\r\nDate: ");
+                stringBuilder.Append("HTTP/1.1 200 OK\r\nDate: ");
                 stringBuilder.Append(dateTime.GetDateTimeFormats('r')[0].ToString());
                 stringBuilder.Append("\r\n");
                 stringBuilder.Append("Server: ezHttp\r\n");
                 stringBuilder.Append("Connection: keepalive\r\n");
-                stringBuilder.Append("Content-Type: "+ headers["Accept"] + "; charset=utf8\r\n");
+                if(GetResourceUrl().EndsWith(".svg"))
+                    stringBuilder.Append("Content-Type: image/svg+xml" + "; charset=utf8\r\n");
+                else
+                    stringBuilder.Append("Content-Type: "+ headers["Accept"] + "; charset=utf8\r\n");
                 
                 //String html = "<html><head><title>解读HTTP包示例</title></head><body>test</br></body></html>\r\n";
                 //Byte[] buffer = Encoding.UTF8.GetBytes(html);
@@ -122,7 +125,7 @@ namespace HttpParser
             }
             else if (this.statusCode == 404)
             {
-                stringBuilder.Append("HTTP/1.1 404Not Found\r\nDate: ");
+                stringBuilder.Append("HTTP/1.1 404 Not Found\r\nDate: ");
                 stringBuilder.Append(dateTime.GetDateTimeFormats('r')[0].ToString());
                 stringBuilder.Append("\r\nServer: ezHttp\r\nConnection: close\r\nContent-Length: 0\r\n\r\n"); 
             }
