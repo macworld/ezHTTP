@@ -182,7 +182,7 @@ namespace ezHttp
 
         private bool DetectHomeDic(string ServerDirectory,string HomeDic)
         {
-            string filepath=ServerDirectory+HomeDic;
+            string filepath=ServerDirectory+"\\"+HomeDic;
             if(!File.Exists(filepath))
             {
                 text_remind.Text = "HomePage doesn't exist.";

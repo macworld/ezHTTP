@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="WelcomeFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/Index.html</Value>
+      <Value Profile="(Default)">Index.html</Value>
     </Setting>
   </Settings>
 </SettingsFile>

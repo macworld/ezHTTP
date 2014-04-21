@@ -44,8 +44,8 @@ namespace HttpParser
                 resourceUrl = this.rawUrl.Substring(0, this.rawUrl.LastIndexOf("?") + 1);
             else
                 resourceUrl = this.rawUrl;
-            if (resourceUrl.EndsWith("/"))
-                return Properties.HttpParserSettings.Default.WelcomeFilePath;
+            if (resourceUrl.Equals("/"))
+                return "/"+Properties.HttpParserSettings.Default.WelcomeFilePath;
             else
                 return resourceUrl;
         }

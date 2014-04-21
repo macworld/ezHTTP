@@ -25,7 +25,7 @@ namespace HttpParser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/Index.html")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Index.html")]
         public string WelcomeFilePath {
             get {
                 return ((string)(this["WelcomeFilePath"]));
