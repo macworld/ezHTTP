@@ -138,8 +138,8 @@ namespace SocketManager
                 return false;
             }
 
-            // start the server with a listen backlog of 100 connections
-            listenSocket.Listen(100);
+            // start the server with a listen backlog of 10000 connections
+            listenSocket.Listen(10000);
             // post accepts on the listening socket
             stop = false;
             StartAccept(null);   
@@ -265,7 +265,7 @@ namespace SocketManager
             {
                 //increment the count of the total bytes receive by the server
                 Interlocked.Add(ref m_totalBytesRead, e.BytesTransferred);
-                Console.WriteLine("The server has read a total of {0} bytes", m_totalBytesRead);
+                //Console.WriteLine("The server has read a total of {0} bytes", m_totalBytesRead);
                 
 
                 if (OnDataReceived != null)

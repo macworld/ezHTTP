@@ -54,7 +54,7 @@ namespace ezHttp
             token.HttpParser.SetRawData(data);
             if (token.HttpParser.IsHttpRequest())
             {
-                Console.WriteLine("\t\tresource url: " + token.HttpParser.GetResourceUrl());
+                //Console.WriteLine("\t\tresource url: " + token.HttpParser.GetResourceUrl());
                 Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(token.HttpParser.GetResourceUrl(), ref statusCode);
                 token.HttpParser.SetStatusCode(statusCode);
                 token.Socket.Send(token.HttpParser.GetWrappedResponse(sendData));
