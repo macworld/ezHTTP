@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentTypeConverrter.cs" />
     <Compile Include="HttpProtocolParser.cs" />
     <Compile Include="Properties\HttpParserSettings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -53,6 +54,11 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>HttpParserSettings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConentTypeList.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

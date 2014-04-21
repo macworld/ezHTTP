@@ -15,6 +15,7 @@ namespace HttpParser
         String rawUrl;
         int statusCode;
         long chunkSize;
+        private ContentTypeConverrter TypeConverrter = ContentTypeConverrter.Instance;
 
         public HttpProtocolParser()
         {
@@ -105,10 +106,8 @@ namespace HttpParser
                 if(GetResourceUrl().EndsWith(".svg"))
                     stringBuilder.Append("Content-Type: image/svg+xml" + "; charset=utf8\r\n");
                 else
-                    stringBuilder.Append("Content-Type: "+ headers["Accept"] + "; charset=utf8\r\n");
+                    stringBuilder.Append("Content-Type: "+ TypeConverrter.GetType(GetResourceUrl()) + "; charset=utf8\r\n");
                 
-                //String html = "<html><head><title>解读HTTP包示例</title></head><body>test</br></body></html>\r\n";
-                //Byte[] buffer = Encoding.UTF8.GetBytes(html);
                 stringBuilder.Append("Content-Length: ");
                 stringBuilder.Append(data.Length);
 
