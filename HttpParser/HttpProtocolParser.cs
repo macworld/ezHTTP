@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Web;
 
 namespace HttpParser
 {
     public class HttpProtocolParser
     {
         Byte[] rawData;
-        Hashtable headers;  
-        Hashtable parameters;
+        Dictionary<string, string> headers = new Dictionary<string,string>();  
+        Dictionary<string ,string> parameters = new Dictionary<string,string>();
         String rawUrl;
         int statusCode;
-        long chunkSize;
-        private ContentTypeConverrter TypeConverrter = ContentTypeConverrter.Instance;
-
+        private ContentTypeConverter TypeConverrter = ContentTypeConverter.Instance;
+         
         public HttpProtocolParser()
         {
 
@@ -39,12 +39,12 @@ namespace HttpParser
 
         public String GetResourceUrl()
         {
-            String resourceUrl ;
+            String resourceUrl;
             if(this.rawUrl.Contains('?'))
                 resourceUrl = this.rawUrl.Substring(0, this.rawUrl.LastIndexOf("?") + 1);
             else
                 resourceUrl = this.rawUrl;
-            if (resourceUrl.EndsWith("/"))
+            if (resourceUrl.Equals("/"))
                 return Properties.HttpParserSettings.Default.WelcomeFilePath;
             else
                 return resourceUrl;
@@ -59,17 +59,17 @@ namespace HttpParser
 
             if (firstLineWords[0] == "GET")
             {
-                this.rawUrl = firstLineWords[1];
+                this.rawUrl = HttpUtility.UrlDecode(firstLineWords[1]);
                 int index = this.rawUrl.LastIndexOf('?');
                 int length = this.rawUrl.Length;
 
                 if (index != -1 && index < length - 3)
                 {
-                    this.parameters = new Hashtable();
+                    this.parameters.Clear();
                     this.ProcessParameters(this.rawUrl.Substring(index, length - index));
                 }
                 isLegal = true;
-                this.headers = new Hashtable();
+                this.headers.Clear();
             }
             else
             {
@@ -96,6 +96,7 @@ namespace HttpParser
         {
             StringBuilder stringBuilder = new StringBuilder();
             DateTime dateTime = DateTime.Now;
+
             if (this.statusCode == 200)
             {
                 stringBuilder.Append("HTTP/1.1 200 OK\r\nDate: ");
@@ -103,10 +104,12 @@ namespace HttpParser
                 stringBuilder.Append("\r\n");
                 stringBuilder.Append("Server: ezHttp\r\n");
                 stringBuilder.Append("Connection: keepalive\r\n");
-                if(GetResourceUrl().EndsWith(".svg"))
-                    stringBuilder.Append("Content-Type: image/svg+xml" + "; charset=utf8\r\n");
-                else
-                    stringBuilder.Append("Content-Type: "+ TypeConverrter.GetType(GetResourceUrl()) + "; charset=utf8\r\n");
+                String resType = TypeConverrter.GetType(GetResourceUrl());
+
+                if (resType == "")
+                    resType = headers["Accept"];
+                
+                stringBuilder.Append("Content-Type: "+ resType + "; charset=utf8\r\n");
                 
                 stringBuilder.Append("Content-Length: ");
                 stringBuilder.Append(data.Length);
