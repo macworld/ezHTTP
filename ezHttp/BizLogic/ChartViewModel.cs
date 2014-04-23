@@ -14,9 +14,9 @@ namespace ezHttp
             CpuInfo = new ObservableCollection<ChartInfo>();
             FileBufferInfo = new ObservableCollection<ChartInfo>();
 
-            CpuInfo.Add(new ChartInfo() { Category = "CPU Usage", Number = 1 });
-            ConnectionInfo.Add(new ChartInfo() { Category = "Connection Pool", Number = 1 });
-            FileBufferInfo.Add(new ChartInfo() { Category = "File Buffer Usage", Number = 1 });
+            CpuInfo.Add(new ChartInfo() { Category = "", Number = 1 });
+            ConnectionInfo.Add(new ChartInfo() { Category = "", Number = 1 });
+            FileBufferInfo.Add(new ChartInfo() { Category = "", Number = 1 });
         }
 
         private object selectedItem = null;

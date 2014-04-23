@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContentTypeConverrter.cs" />
+    <Compile Include="ContentTypeConverter.cs" />
     <Compile Include="HttpProtocolParser.cs" />
     <Compile Include="Properties\HttpParserSettings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -5,7 +5,7 @@
         xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
         WindowStyle="None"
         AllowsTransparency="True"
-        Title="EasyWebSever (Beta)" Height="460.947" Width="755.373" Foreground="{x:Null}" BorderThickness="5" BorderBrush="WhiteSmoke" Background="White" Icon="Ezhttp.ico" ResizeMode="CanMinimize">
+        Title="EasyWebSever (Beta)" Height="460.947" Width="755.373" Foreground="{x:Null}" BorderThickness="4" BorderBrush="#B2E8E8E8" Background="White" Icon="Ezhttp.ico" ResizeMode="CanMinimize" Loaded="window_Loaded">
 	<Window.Resources>
 		<Storyboard x:Key="ShowState">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="StatusText">
@@ -125,13 +125,13 @@
             <ColumnDefinition Width="253*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="StatusText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="27.665,408.987,0,0" Grid.Column="1" Height="26.46" Width="430.647" Foreground="#FF4F4F4F" FontSize="16"/>
-        <Grid x:Name="contents" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="656.32" Grid.Column="1" Margin="0,102.837,0,0" Grid.ColumnSpan="2">
+        <TextBlock x:Name="StatusText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30.665,408.987,0,0" Grid.Column="1" Height="26.46" Width="430.647" Foreground="#FF4F4F4F" FontSize="16"/>
+        <Grid x:Name="contents" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="656.32" Grid.Column="1" Margin="3,102.837,0,-11" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
             	<ColumnDefinition/>
             	<ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-        	<UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643">
+        	<UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643" d:IsHidden="True">
         		<Grid HorizontalAlignment="Left" Height="353.172" VerticalAlignment="Top" Width="632.643" RenderTransformOrigin="0.721,0.582">
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,32.797,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
         			<TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="147.109,32.363,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
@@ -204,7 +204,7 @@
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource CpuColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Foreground="#FFB5ECB5">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Foreground="#FFB5ECB5" Background="#00000000">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="Cpu"
@@ -218,7 +218,7 @@
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource MemColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFFFFFFF" Foreground="#FFBCD4EA">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#01FFFFFF" Foreground="#FFBCD4EA">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="Memory"
@@ -232,7 +232,7 @@
         					ChartTitleVisibility  ="Hidden"
         					FontSize ="15"
         					Palette="{StaticResource ConnectionColors}"
-        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#FFFFFFFF" Foreground="#FFE6A1D5">
+        					SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Background="#05FFFFFF" Foreground="#FFE6A1D5">
         					<chart:RadialGaugeChart.Series>
         						<chart:ChartSeries
         							SeriesTitle="ConnectionPool"
@@ -252,29 +252,29 @@
         	</UserControl>
         	<UserControl x:Name="content_log" HorizontalAlignment="Left" Height="387.5" VerticalAlignment="Top" Width="694.143" Grid.ColumnSpan="2" Margin="0,0,-61.5,-25.39" d:IsHidden="True">
         		<Grid HorizontalAlignment="Left" Height="336.664" VerticalAlignment="Top" Width="701.643" Margin="0,0,-69,0">
-        			<ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="263" VerticalAlignment="Bottom" Width="689.31" Margin="15.999,0,-3.666,72" BorderBrush="{x:Null}" Background="White"/>
+        			<ListBox x:Name="listbox_log" HorizontalAlignment="Left" Height="263" VerticalAlignment="Bottom" Width="689.31" Margin="15.999,0,-3.666,67.5" BorderBrush="{x:Null}" Background="White"/>
         			<TextBlock x:Name="text_clear" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="649.592,294.052,-5.667,0" Height="38.735" Width="57.718" Foreground="Black" FontSize="21.333"
         				MouseEnter="text_clear_MouseEnter"  MouseLeave="text_clear_MouseLeave"  MouseLeftButtonUp="text_clear_MouseLeftButtonUp"><Run Language="zh-cn" Text="Clear"/></TextBlock>
         			<TextBlock x:Name="text_view_log" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="522.59,294.052,0,-8.796" Height="51.408" Width="99.437" Foreground="#FF111111" FontSize="21.333"
-        				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="OpenFile"/></TextBlock>
+        				MouseEnter="text_view_log_MouseEnter"  MouseLeave="text_view_log_MouseLeave"  MouseLeftButtonUp="text_view_log_MouseLeftButtonUp"><Run Language="zh-cn" Text="Open File"/></TextBlock>
         		</Grid>
         	</UserControl>
         </Grid>
-        <TextBlock x:Name="text_settings" Grid.Column="1" HorizontalAlignment="Left" Margin="186.054,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnSettingsClicked" MouseEnter="text_settings_MouseEnter" MouseLeave="text_settings_MouseLeave"><TextBlock.OpacityMask>
+        <TextBlock x:Name="text_settings" Grid.Column="1" HorizontalAlignment="Left" Margin="189.054,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnSettingsClicked" MouseEnter="text_settings_MouseEnter" MouseLeave="text_settings_MouseLeave"><TextBlock.OpacityMask>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TextBlock.OpacityMask><Run Language="zh-cn" Text="Settings"/></TextBlock>
-        <TextBlock Margin="14.677,8.586,119.187,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe UI Semilight" Height="54.414" FontSize="40" Foreground="#FF3E3E3E" Grid.Column="1"><Run Language="zh-cn" Text="EasyWebServer"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="300.621,34.483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="135.943" Foreground="#FF727272" FontFamily="Segoe UI" Grid.Column="1" FontSize="16"><Run Language="zh-cn" Text="BETA   "/></TextBlock>
-        <TextBlock x:Name="text_home" Grid.Column="1" HorizontalAlignment="Left" Margin="17.677,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" 
+        <TextBlock Margin="17.677,8.586,116.187,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe UI Semilight" Height="54.414" FontSize="40" Foreground="#FF323232" Grid.Column="1"><Run Language="zh-cn" Text="EasyWebServer"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="303.621,34.483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="135.943" Foreground="#FF555555" FontFamily="Segoe UI" Grid.Column="1" FontSize="16"><Run Language="zh-cn" Text="BETA   "/></TextBlock>
+        <TextBlock x:Name="text_home" Grid.Column="1" HorizontalAlignment="Left" Margin="20.677,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" 
                    PreviewMouseLeftButtonUp="OnHomeClicked" MouseEnter="text_home_MouseEnter" MouseLeave="text_home_MouseLeave"><TextBlock.OpacityMask>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TextBlock.OpacityMask><Run Language="zh-cn" Text="Home"/></TextBlock>
-        <TextBlock x:Name="text_log" Grid.Column="1" HorizontalAlignment="Left" Margin="109.054,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnLogClicked" MouseEnter="text_log_MouseEnter" MouseLeave="text_log_MouseLeave"><TextBlock.OpacityMask>
+        <TextBlock x:Name="text_log" Grid.Column="1" HorizontalAlignment="Left" Margin="112.054,68.5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF7C7C7C" Width="77" Height="33.337" FontSize="18.667" PreviewMouseLeftButtonUp="OnLogClicked" MouseEnter="text_log_MouseEnter" MouseLeave="text_log_MouseLeave"><TextBlock.OpacityMask>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </TextBlock.OpacityMask><Run Language="zh-cn" Text="Log"/></TextBlock>
-        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="#FFB4B4B4" HorizontalAlignment="Left" Height="1" Margin="17.677,103.837,0,0" Stretch="Fill" VerticalAlignment="Top" Width="687.5" Grid.ColumnSpan="2" Stroke="#FFE4E4E4"/>
-        <TextBlock x:Name="AboutButton" HorizontalAlignment="Left" Margin="206.631,34.483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="59.338" Foreground="#FF727272" FontFamily="Segoe UI" Grid.Column="2" FontSize="16" MouseEnter="AboutButton_MouseEnter" MouseLeave="AboutButton_MouseLeave"><Run Language="zh-cn" Text="About"/></TextBlock>
-        <Rectangle x:Name="AboutBak" Grid.Column="2" Fill="#FF510031" HorizontalAlignment="Left" Height="23.766" Margin="259.572,64.444,-108.437,0" VerticalAlignment="Top" Width="124.834" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" Fill="#FFB4B4B4" HorizontalAlignment="Left" Height="1" Margin="20.677,103.837,0,0" Stretch="Fill" VerticalAlignment="Top" Width="687.5" Grid.ColumnSpan="2" Stroke="#FFE4E4E4"/>
+        <TextBlock x:Name="AboutButton" HorizontalAlignment="Left" Margin="209.631,34.483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24.134" Width="59.338" Foreground="#FF686868" FontFamily="Segoe UI" Grid.Column="2" FontSize="16" MouseEnter="AboutButton_MouseEnter" MouseLeave="AboutButton_MouseLeave"><Run Language="zh-cn" Text="About"/></TextBlock>
+        <Rectangle x:Name="AboutBak" Grid.Column="2" Fill="#FF510031" HorizontalAlignment="Left" Height="23.766" Margin="262.572,64.444,-109.191,0" VerticalAlignment="Top" Width="124.834" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
         	<Rectangle.RenderTransform>
         		<TransformGroup>
         			<ScaleTransform/>
@@ -284,7 +284,7 @@
         		</TransformGroup>
         	</Rectangle.RenderTransform>
         </Rectangle>
-        <TextBlock x:Name="Author" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="7.5,65.277,-108.437,0" Foreground="White" Height="23.266" Width="100.937" RenderTransformOrigin="0.5,0.5" FontSize="13.333"><TextBlock.RenderTransform>
+        <TextBlock x:Name="Author" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="3" Margin="10.5,65.277,-111.437,0" Foreground="White" Height="23.266" Width="100.937" RenderTransformOrigin="0.5,0.5" FontSize="13.333"><TextBlock.RenderTransform>
         		<TransformGroup>
         			<ScaleTransform/>
         			<SkewTransform/>
@@ -292,9 +292,9 @@
         			<TranslateTransform/>
         		</TransformGroup>
         	</TextBlock.RenderTransform><Run Language="zh-cn" Text="Macworld"/></TextBlock>
-        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" HorizontalAlignment="Left" Height="1" Margin="23.677,379.337,0,0" Stretch="Fill" VerticalAlignment="Top" Width="681.5" Grid.ColumnSpan="2" Fill="#FFB4B4B4" Stroke="#FFE4E4E4"/>
-        <Rectangle x:Name="DragBar" Grid.ColumnSpan="3" Fill="#FFB4B4B4" HorizontalAlignment="Left" Height="34.483" Stroke="#FFE4E4E4" VerticalAlignment="Top" Width="657.42" MouseDown="DragBar_MouseDown" Opacity="0"/>
-        <Image x:Name="Close_btn" Grid.Column="2" Margin="225.548,3.335,10.667,425.612" Source="Images/Close.png" Stretch="Fill" MouseLeftButtonUp="Close_btn_MouseLeftButtonUp" Opacity="0.5"/>
-        <Image x:Name="Minimize_btn" Grid.Column="2" Margin="194.951,1.168,41.264,427.779" Source="Images/Mini.png" Stretch="Fill" MouseLeftButtonUp="Minimize_btn_MouseLeftButtonUp" Opacity="0.5"/>
+        <Path Grid.Column="1" Data="M24,110 L82.166784,110 642.49784,110 653.49794,110" HorizontalAlignment="Left" Height="1" Margin="26.677,379.337,0,0" Stretch="Fill" VerticalAlignment="Top" Width="681.5" Grid.ColumnSpan="2" Fill="#FFB4B4B4" Stroke="#FFE4E4E4"/>
+        <Rectangle x:Name="DragBar" Grid.ColumnSpan="2" Fill="#FFB4B4B4" HorizontalAlignment="Left" Height="34.483" Stroke="#FFE4E4E4" VerticalAlignment="Top" Width="657.42" MouseDown="DragBar_MouseDown" Opacity="0" Margin="1.9,0,0,0" Grid.Column="1"/>
+        <Image x:Name="Close_btn" Grid.Column="2" Margin="228.548,3.335,7.667,425.612" Source="Images/Close.png" Stretch="Fill" MouseLeftButtonUp="Close_btn_MouseLeftButtonUp" Opacity="0.5"/>
+        <Image x:Name="Minimize_btn" Grid.Column="2" Margin="197.951,2.168,38.264,426.779" Source="Images/Mini.png" Stretch="Fill" MouseLeftButtonUp="Minimize_btn_MouseLeftButtonUp" Opacity="0.5"/>
     </Grid>
 </Window>

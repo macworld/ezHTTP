@@ -27,7 +27,7 @@ namespace ezHttp
     /// </summary>
     public partial class MainWindow : Window
     {
-        Color clicked_color = Color.FromRgb(0, 0, 0);
+        Color clicked_color = Color.FromRgb(30, 30, 30);
         Color default_color = Color.FromRgb(124, 124, 124);
         Color start_color = Color.FromRgb(112,173,71);
         Color stop_color = Color.FromRgb(0xcc, 0x66, 62);
@@ -36,14 +36,16 @@ namespace ezHttp
         private ChartInfo cpuinfo,bufferinfo,coninfo;
         private PerformanceCounter cpuCounter;
         private bool cpuWarn = false, fileWarn = false, connectWarn = false;
-        private int fadeCount = -1;
+        private int fadeCount = 0;
         private Storyboard aboutShow, aboutFade;
         private bool isAboutShowing = false, isAboutFading = false,isAboutMouseLeave = true;
+        DispatcherTimer stateTimer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = StateCharts;
 
+            StatusText.Text = "Initializing...";
             cpuinfo = StateCharts.CpuInfo.First();
             bufferinfo = StateCharts.FileBufferInfo.First();
             coninfo = StateCharts.ConnectionInfo.First();
@@ -63,10 +65,8 @@ namespace ezHttp
             InitSettings();
             //add hook to receive log message
             Loaded += MainWindow_Loaded;
-            DispatcherTimer stateTimer = new DispatcherTimer();
             stateTimer.Interval = TimeSpan.FromSeconds(0.5);
             stateTimer.Tick += StatetimerTick;//更新状态信息
-            stateTimer.Start();
         }
 
         private void UpdateStateText(string state, SolidColorBrush color)
@@ -336,6 +336,11 @@ namespace ezHttp
         private void Close_btn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
         	this.Close();
+        }
+
+        private void window_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	stateTimer.Start();
         }
     }
 }

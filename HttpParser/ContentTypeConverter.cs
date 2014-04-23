@@ -8,13 +8,13 @@ using System.Xml.Linq;
 
 namespace HttpParser
 {
-    class ContentTypeConverrter
+    class ContentTypeConverter
     {
 
-        private static volatile ContentTypeConverrter instance;
+        private static volatile ContentTypeConverter instance;
         private static object syncRoot = new Object();
         private Dictionary<string,string> typeDictionary = new Dictionary<string, string>(); 
-        private ContentTypeConverrter()
+        private ContentTypeConverter()
         {
             XDocument doc = XDocument.Load("ConentTypeList.xml");
 
@@ -26,7 +26,7 @@ namespace HttpParser
             }
         }
 
-        public static ContentTypeConverrter Instance
+        public static ContentTypeConverter Instance
         {
             get
             {
@@ -35,7 +35,7 @@ namespace HttpParser
                     lock (syncRoot)
                     {
                         if (instance == null)
-                            instance = new ContentTypeConverrter();
+                            instance = new ContentTypeConverter();
                     }
                 }
 

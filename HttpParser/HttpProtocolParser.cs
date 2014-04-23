@@ -15,7 +15,7 @@ namespace HttpParser
         String rawUrl;
         int statusCode;
         long chunkSize;
-        private ContentTypeConverrter TypeConverrter = ContentTypeConverrter.Instance;
+        private ContentTypeConverter TypeConverrter = ContentTypeConverter.Instance;
 
         public HttpProtocolParser()
         {
