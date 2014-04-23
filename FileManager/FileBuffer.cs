@@ -132,15 +132,15 @@ namespace FileManager
         /// <returns></returns>
         private bool SaveFile(Byte[] fileByteStream, string url)
         {
+            Logger log = new Logger("AppLogger");
             long fileLength = fileByteStream.Length;
             if (totalFreeSpace < fileLength)
             {
                 if (fileLength > bufferSize)
                 {
-                    //Logger.GetLogger().Info("The file is to big to buffer it");
+                    log.Warn("File: " + url + " is too big to store in buffer!");
                     return false;
                 }
-                //Logger.GetLogger().Info("There is not enough space in the fileBuffer.We'll try to release some older file");
                 while (totalFreeSpace < fileLength)
                 {
                     if (!ReleaseFileLRU(fileLength)) // while there is no file to realse ,return false
@@ -157,6 +157,7 @@ namespace FileManager
                 {
                     if (fileLengthDictionary.ContainsKey(url) || totalFreeSpace < fileLength)//avoid the error causing by other saving action
                     {
+                        //log.Warn("Warning: File "+url+"is");
                         return false;
                     }
                     LruList.AddFirst(url);
@@ -203,9 +204,8 @@ namespace FileManager
                     }
                     urlToPageDic.Add(url, urlPages);//added to the dictionnary which is used as a page table
                     fileLengthDictionary.Add(url, fileLength);//add to the dictionnary when it has been saved in the memory
-                    Logger log = new Logger("AppLogger");
-                    log.Debug("Add file: " + url + " in buffer");
                 }
+                log.Debug("Add file: " + url + " in buffer");
             }
             return true;
         }
@@ -225,7 +225,7 @@ namespace FileManager
             else
             {
                 Logger log = new Logger("AppLogger");
-                log.Warn("There is no file to release");
+                log.Error("There is no file to release");
                 return false;
             }
         }
@@ -237,8 +237,8 @@ namespace FileManager
         private bool RemoveFileInBuffer(string url)
         {
             Logger log = new Logger("AppLogger");
-            log.Debug("File changed, remove file data in buffer: "+ url);
-           // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+            log.Debug("File changed, remove file data in buffer: " + url);
+            // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
             RWLock.AcquireWriterLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
             try
             {
@@ -262,7 +262,7 @@ namespace FileManager
             {
                 RWLock.ReleaseWriterLock();
             }
-               return true;
+            return true;
         }
         /// <summary>
         /// used to avoid too much delete caused by multithreading
@@ -272,31 +272,26 @@ namespace FileManager
         /// <returns></returns>
         private bool RemoveFileInBuffer(string url, long fileLength)
         {
-           // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+            // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
             RWLock.AcquireWriterLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
-            try
+            if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
             {
-                if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
-                {
-                    return false;
-                }
-                string pageString = urlToPageDic[url];
-                urlToPageDic.Remove(url);
-                fileLengthDictionary.Remove(url);
-                string[] pageNumStr = pageString.Split(',');
-                int pageNumInt = 0;
-                for (int i = 0; i < pageNumStr.Length; ++i)
-                {
-                    pageNumInt = Convert.ToInt32(pageNumStr[i]);
-                    freePageStack.Push(pageNumInt);//release the buffer
-                    totalFreeSpace += pageSize; //get the new size of FreeSpace
-                }
+                return false;
             }
-            finally
+            string pageString = urlToPageDic[url];
+            urlToPageDic.Remove(url);
+            fileLengthDictionary.Remove(url);
+            string[] pageNumStr = pageString.Split(',');
+            int pageNumInt = 0;
+            for (int i = 0; i < pageNumStr.Length; ++i)
             {
-                RWLock.ReleaseWriterLock();
+                pageNumInt = Convert.ToInt32(pageNumStr[i]);
+                freePageStack.Push(pageNumInt);//release the buffer
+                totalFreeSpace += pageSize; //get the new size of FreeSpace
             }
-                
+
+            RWLock.ReleaseWriterLock();
+
             return true;
         }
 
@@ -323,47 +318,48 @@ namespace FileManager
             if (fileLengthDictionary.ContainsKey(url))//if the file was exsited in filebuffer
             {
                 RWLock.AcquireReaderLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
-                try
-                //lock (LockRDConflict)
+                if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
+                //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
                 {
-                    if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
-                    //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
+                    Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
+                    SaveFile(readBuffer, url);//save the file to fileBuffer in memory
+                    statusCode = 200;
+                    return readBuffer;
+                }
+                long fileLength = fileLengthDictionary[url];
+                Byte[] fileByteStream = new Byte[fileLength];
+                string pageString = urlToPageDic[url];
+                string[] pageNumStr = pageString.Split(',');
+                int pageNumInt = 0;
+                int fileOffset = 0;
+                for (int i = 0; i < pageNumStr.Length; ++i)
+                {
+                    pageNumInt = Convert.ToInt32(pageNumStr[i]);
+                    if (fileLength - fileOffset >= pageSize)
                     {
-                        Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
-                        SaveFile(readBuffer, url);//save the file to fileBuffer in memory
-                        statusCode = 200;
-                        return readBuffer;
+                        System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, pageSize);
                     }
-                    long fileLength = fileLengthDictionary[url];
-                    Byte[] fileByteStream = new Byte[fileLength];
-                    string pageString = urlToPageDic[url];
-                    string[] pageNumStr = pageString.Split(',');
-                    int pageNumInt = 0;
-                    int fileOffset = 0;
-                    for (int i = 0; i < pageNumStr.Length; ++i)
+                    else
                     {
-                        pageNumInt = Convert.ToInt32(pageNumStr[i]);
-                        if (fileLength - fileOffset >= pageSize)
-                        {
-                            System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, pageSize);
-                        }
-                        else
-                        {
-                            System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, (int)(fileLength - fileOffset));
-                        }
-                        fileOffset += pageSize;
+                        System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, (int)(fileLength - fileOffset));
                     }
-                    //to realize LRU,the file which was read need to be put into the head of the list
-                    LinkedListNode<string> readNode = LruList.Find(url);
+                    fileOffset += pageSize;
+                }
+                //to realize LRU,the file which was read need to be put into the head of the list
+                LinkedListNode<string> readNode = LruList.Find(url);
+                if (readNode != null)
+                {
                     LruList.Remove(url);
                     LruList.AddFirst(readNode);
-                    statusCode = 200;
-                    return fileByteStream;
                 }
-                finally
+                else
                 {
-                    RWLock.ReleaseReaderLock();
+                    LruList.AddFirst(url);
+
                 }
+                statusCode = 200;
+                RWLock.ReleaseReaderLock();
+                return fileByteStream;
             }
             else //when the file is not in fileBuffer,read the file from local fileSystem
             {

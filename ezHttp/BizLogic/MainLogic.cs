@@ -34,12 +34,6 @@ namespace ezHttp
             return true;
         }
 
-        internal static void RestartService()
-        {
-            socketServer.Start();
-            fileBuffer.Run();
-        }
-
         internal static void StopService()
         {
             socketServer.Stop();
@@ -48,13 +42,10 @@ namespace ezHttp
         static void OnReceivedHttpReq(object sender, AsyncUserToken token, byte[] data)
         {
 
-
-            data = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, data);
             int statusCode = 0;
             token.HttpParser.SetRawData(data);
             if (token.HttpParser.IsHttpRequest())
             {
-                //Console.WriteLine("\t\tresource url: " + token.HttpParser.GetResourceUrl());
                 Byte[] sendData = FileManager.FileBuffer.GetInstance().readFile(token.HttpParser.GetResourceUrl(), ref statusCode);
                 token.HttpParser.SetStatusCode(statusCode);
                 token.Socket.Send(token.HttpParser.GetWrappedResponse(sendData));

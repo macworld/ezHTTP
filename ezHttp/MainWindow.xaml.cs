@@ -76,7 +76,7 @@ namespace ezHttp
             StatusText.Foreground = color;
             StatusText.Text = state;
             showState.Begin();
-            fadeCount = 6;
+            fadeCount = 8;
         }
 
         private void ButtonTurnGreen()

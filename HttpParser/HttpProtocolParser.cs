@@ -99,14 +99,11 @@ namespace HttpParser
             if (this.statusCode == 200)
             {
                 stringBuilder.Append("HTTP/1.1 200 OK\r\nDate: ");
-                stringBuilder.Append(dateTime.GetDateTimeFormats('r')[0].ToString());
+                stringBuilder.Append(dateTime.GetDateTimeFormats('r')[0]);
                 stringBuilder.Append("\r\n");
                 stringBuilder.Append("Server: ezHttp\r\n");
                 stringBuilder.Append("Connection: keepalive\r\n");
-                if(GetResourceUrl().EndsWith(".svg"))
-                    stringBuilder.Append("Content-Type: image/svg+xml" + "; charset=utf8\r\n");
-                else
-                    stringBuilder.Append("Content-Type: "+ TypeConverrter.GetType(GetResourceUrl()) + "; charset=utf8\r\n");
+                stringBuilder.Append("Content-Type: "+ TypeConverrter.GetType(GetResourceUrl()) + "\r\n");
                 
                 stringBuilder.Append("Content-Length: ");
                 stringBuilder.Append(data.Length);

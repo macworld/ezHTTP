@@ -172,7 +172,7 @@ namespace ezHttp
         {
             if (Convert.ToInt32(ListenPort) < 1024 || Convert.ToInt32(ListenPort) > 65535)
             {
-                text_remind.Text = "The value of ListenPort Should between 1023 and 65536(not include).";
+                text_remind.Text = "The value of ListenPort Should between 1023 and 65535.";
                 text_remind.Foreground = new SolidColorBrush(remind_error_color);
                 SetUnChanged();
                 return false;
@@ -195,9 +195,9 @@ namespace ezHttp
 
         private bool DetectMaxConnection(string MaxConnection)
         {
-            if (Convert.ToInt32(MaxConnection) < 100)
+            if (Convert.ToInt32(MaxConnection) < 32)
             {
-                text_remind.Text = "The Max Connection should be bigger than 100.";
+                text_remind.Text = "The Max Connection should be bigger than 32.";
                 text_remind.Foreground = new SolidColorBrush(remind_error_color);
                 SetUnChanged();
                 return false;
