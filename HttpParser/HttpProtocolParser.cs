@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Web;
 
 namespace HttpParser
 {
     public class HttpProtocolParser
     {
         Byte[] rawData;
-        Hashtable headers;  
-        Hashtable parameters;
+        Dictionary<string, string> headers = new Dictionary<string,string>();  
+        Dictionary<string ,string> parameters = new Dictionary<string,string>();
         String rawUrl;
         int statusCode;
-        long chunkSize;
         private ContentTypeConverter TypeConverrter = ContentTypeConverter.Instance;
 
         public HttpProtocolParser()
@@ -59,17 +59,17 @@ namespace HttpParser
 
             if (firstLineWords[0] == "GET")
             {
-                this.rawUrl = firstLineWords[1];
+                this.rawUrl = HttpUtility.UrlDecode(firstLineWords[1]);
                 int index = this.rawUrl.LastIndexOf('?');
                 int length = this.rawUrl.Length;
 
                 if (index != -1 && index < length - 3)
                 {
-                    this.parameters = new Hashtable();
+                    this.parameters.Clear();
                     this.ProcessParameters(this.rawUrl.Substring(index, length - index));
                 }
                 isLegal = true;
-                this.headers = new Hashtable();
+                this.headers.Clear();
             }
             else
             {
