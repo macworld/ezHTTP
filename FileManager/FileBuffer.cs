@@ -157,7 +157,6 @@ namespace FileManager
                 {
                     if (fileLengthDictionary.ContainsKey(url) || totalFreeSpace < fileLength)//avoid the error causing by other saving action
                     {
-                        //log.Warn("Warning: File "+url+"is");
                         return false;
                     }
                     LruList.AddFirst(url);
@@ -204,8 +203,8 @@ namespace FileManager
                     }
                     urlToPageDic.Add(url, urlPages);//added to the dictionnary which is used as a page table
                     fileLengthDictionary.Add(url, fileLength);//add to the dictionnary when it has been saved in the memory
+                    log.Debug("Add file: " + url + " in buffer");
                 }
-                log.Debug("Add file: " + url + " in buffer");
             }
             return true;
         }
@@ -274,23 +273,28 @@ namespace FileManager
         {
             // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
             RWLock.AcquireWriterLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
-            if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
+            try
             {
-                return false;
+                if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
+                {
+                    return false;
+                }
+                string pageString = urlToPageDic[url];
+                urlToPageDic.Remove(url);
+                fileLengthDictionary.Remove(url);
+                string[] pageNumStr = pageString.Split(',');
+                int pageNumInt = 0;
+                for (int i = 0; i < pageNumStr.Length; ++i)
+                {
+                    pageNumInt = Convert.ToInt32(pageNumStr[i]);
+                    freePageStack.Push(pageNumInt);//release the buffer
+                    totalFreeSpace += pageSize; //get the new size of FreeSpace
+                }
             }
-            string pageString = urlToPageDic[url];
-            urlToPageDic.Remove(url);
-            fileLengthDictionary.Remove(url);
-            string[] pageNumStr = pageString.Split(',');
-            int pageNumInt = 0;
-            for (int i = 0; i < pageNumStr.Length; ++i)
+            finally
             {
-                pageNumInt = Convert.ToInt32(pageNumStr[i]);
-                freePageStack.Push(pageNumInt);//release the buffer
-                totalFreeSpace += pageSize; //get the new size of FreeSpace
+                RWLock.ReleaseWriterLock();
             }
-
-            RWLock.ReleaseWriterLock();
 
             return true;
         }
@@ -318,48 +322,50 @@ namespace FileManager
             if (fileLengthDictionary.ContainsKey(url))//if the file was exsited in filebuffer
             {
                 RWLock.AcquireReaderLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
-                if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
-                //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
+                try
+                //lock (LockRDConflict)
                 {
-                    Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
-                    SaveFile(readBuffer, url);//save the file to fileBuffer in memory
+                    if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
+                    //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
+                    {
+                        Byte[] readBuffer = FileSystem.GetInstance().readFile(url);
+                        SaveFile(readBuffer, url);//save the file to fileBuffer in memory
+                        statusCode = 200;
+                        return readBuffer;
+                    }
+                    long fileLength = fileLengthDictionary[url];
+                    Byte[] fileByteStream = new Byte[fileLength];
+                    string pageString = urlToPageDic[url];
+                    string[] pageNumStr = pageString.Split(',');
+                    int pageNumInt = 0;
+                    int fileOffset = 0;
+                    for (int i = 0; i < pageNumStr.Length; ++i)
+                    {
+                        pageNumInt = Convert.ToInt32(pageNumStr[i]);
+                        if (fileLength - fileOffset >= pageSize)
+                        {
+                            System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, pageSize);
+                        }
+                        else
+                        {
+                            System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, (int)(fileLength - fileOffset));
+                        }
+                        fileOffset += pageSize;
+                    }
+                    //to realize LRU,the file which was read need to be put into the head of the list
+                    LinkedListNode<string> readNode = LruList.Find(url);
+                    if (readNode != null)
+                    {
+                        LruList.Remove(url);
+                        LruList.AddFirst(readNode);
+                    }
                     statusCode = 200;
-                    return readBuffer;
+                    return fileByteStream;
                 }
-                long fileLength = fileLengthDictionary[url];
-                Byte[] fileByteStream = new Byte[fileLength];
-                string pageString = urlToPageDic[url];
-                string[] pageNumStr = pageString.Split(',');
-                int pageNumInt = 0;
-                int fileOffset = 0;
-                for (int i = 0; i < pageNumStr.Length; ++i)
+                finally
                 {
-                    pageNumInt = Convert.ToInt32(pageNumStr[i]);
-                    if (fileLength - fileOffset >= pageSize)
-                    {
-                        System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, pageSize);
-                    }
-                    else
-                    {
-                        System.Buffer.BlockCopy(memoryBuffer, pageNumInt * pageSize, fileByteStream, (int)fileOffset, (int)(fileLength - fileOffset));
-                    }
-                    fileOffset += pageSize;
+                    RWLock.ReleaseReaderLock();
                 }
-                //to realize LRU,the file which was read need to be put into the head of the list
-                LinkedListNode<string> readNode = LruList.Find(url);
-                if (readNode != null)
-                {
-                    LruList.Remove(url);
-                    LruList.AddFirst(readNode);
-                }
-                else
-                {
-                    LruList.AddFirst(url);
-
-                }
-                statusCode = 200;
-                RWLock.ReleaseReaderLock();
-                return fileByteStream;
             }
             else //when the file is not in fileBuffer,read the file from local fileSystem
             {
