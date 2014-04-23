@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonLib;
 using System.IO;
+using System.Threading;
 
 namespace FileManager
 {
@@ -31,13 +32,23 @@ namespace FileManager
         private static FileBuffer localFileBuffer = new FileBuffer();
         private object LockSSConflict = new object();  //used to avoid save & save conflict;
         private object LockRDConflict = new object();  //used to avoid read & delete conflict
-
+        private ReaderWriterLock RWLock = new ReaderWriterLock();
         /// <summary>
         /// return buffer usage percent
         /// </summary>
         public int BufferUsage
         {
-            get { return 100*(bufferSize-totalFreeSpace)/bufferSize; }
+            get
+            {
+                if (bufferSize != 0)
+                {
+                    return 100 * (bufferSize - totalFreeSpace) / bufferSize;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
         private FileBuffer()
         {
@@ -227,7 +238,9 @@ namespace FileManager
         {
             Logger log = new Logger("AppLogger");
             log.Debug("File changed, remove file data in buffer: "+ url);
-            lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+           // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+            RWLock.AcquireWriterLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
+            try
             {
                 if (!LruList.Remove(url))//when the url is not in the LruList
                 {
@@ -244,8 +257,12 @@ namespace FileManager
                     freePageStack.Push(pageNumInt);//release the buffer
                     totalFreeSpace += pageSize; //get the new size of FreeSpace
                 }
-                return true;
             }
+            finally
+            {
+                RWLock.ReleaseWriterLock();
+            }
+               return true;
         }
         /// <summary>
         /// used to avoid too much delete caused by multithreading
@@ -255,7 +272,9 @@ namespace FileManager
         /// <returns></returns>
         private bool RemoveFileInBuffer(string url, long fileLength)
         {
-            lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+           // lock (LockRDConflict)//avoid the conflict when read the file which has been deleted
+            RWLock.AcquireWriterLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
+            try
             {
                 if (totalFreeSpace > fileLength | !LruList.Remove(url))//when the url is not in the LruList
                 {
@@ -272,8 +291,13 @@ namespace FileManager
                     freePageStack.Push(pageNumInt);//release the buffer
                     totalFreeSpace += pageSize; //get the new size of FreeSpace
                 }
-                return true;
             }
+            finally
+            {
+                RWLock.ReleaseWriterLock();
+            }
+                
+            return true;
         }
 
         /// <summary>
@@ -298,7 +322,9 @@ namespace FileManager
             }
             if (fileLengthDictionary.ContainsKey(url))//if the file was exsited in filebuffer
             {
-                lock (LockRDConflict)
+                RWLock.AcquireReaderLock(FileManager.Properties.FileManagerSettings.Default.LockTimeOut);
+                try
+                //lock (LockRDConflict)
                 {
                     if (!fileLengthDictionary.ContainsKey(url))//when the delete part has delete the file in the buffer,
                     //due to  the wait the last contain is not effective now,we need to make sure if the file exist or not again
@@ -333,6 +359,10 @@ namespace FileManager
                     LruList.AddFirst(readNode);
                     statusCode = 200;
                     return fileByteStream;
+                }
+                finally
+                {
+                    RWLock.ReleaseReaderLock();
                 }
             }
             else //when the file is not in fileBuffer,read the file from local fileSystem
