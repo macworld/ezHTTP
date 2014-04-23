@@ -138,15 +138,12 @@ namespace ezHttp
         {
             if (!Directory.Exists(ServerDirectory))
             {
-                text_remind.Text = "Server Directory exist";
+                text_remind.Text = "Server Directory doesn't exist";
                 text_remind.Foreground = new SolidColorBrush(remind_error_color);
                 SetUnChanged();
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         private bool DetectFileBuffer(ref string FileBuffer)

@@ -131,10 +131,10 @@
             	<ColumnDefinition/>
             	<ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-        	<UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643" d:IsHidden="True">
+        	<UserControl x:Name="content_settings" HorizontalAlignment="Left" Height="362.11" VerticalAlignment="Top" Width="632.643">
         		<Grid HorizontalAlignment="Left" Height="353.172" VerticalAlignment="Top" Width="632.643" RenderTransformOrigin="0.721,0.582">
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,32.797,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Server Directory"/></TextBlock>
-        			<TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="147.109,32.363,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
+        			<TextBox x:Name="textbox_serverDirectory" HorizontalAlignment="Left" Height="23.808" Margin="147.109,32.363,0,0" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="255" MaxLines="1">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -144,7 +144,7 @@
         				</TextBox.BorderBrush>
         			</TextBox>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,116.816,0,0" Height="23.374" Width="137.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Size of Filebuffer"/></TextBlock>
-        			<TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="147.109,116.382,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" GotFocus="textbox_filebuffer_GotFocus" LostFocus="textbox_filebuffer_LostFocus" KeyDown="textbox_KeyDown_number" MaxLength="6">
+        			<TextBox x:Name="textbox_filebuffer" HorizontalAlignment="Left" Height="23.808" Margin="147.109,116.382,0,0" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" GotFocus="textbox_filebuffer_GotFocus" LostFocus="textbox_filebuffer_LostFocus" KeyDown="textbox_KeyDown_number" MaxLength="6">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -154,7 +154,7 @@
         				</TextBox.BorderBrush>
         			</TextBox>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="22.5,205.645,0,0" Height="23.374" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Listen Port"/></TextBlock>
-        			<TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="147.109,205.645,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" KeyDown="textbox_KeyDown_number" MaxLength="5">
+        			<TextBox x:Name="textbox_listenport" HorizontalAlignment="Left" Height="23.808" Margin="147.109,205.645,0,0" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" KeyDown="textbox_KeyDown_number" MaxLength="5" MaxLines="1">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -165,7 +165,7 @@
         			</TextBox>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,206.079,0,0" Height="23.374" Width="98.218" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="IPv6 Supprot"/></TextBlock>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,116.816,0,0" Height="23.374" Width="124.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Max Connection"/></TextBlock>
-        			<TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="530.372,116.816,-58.169,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="5" KeyDown="textbox_KeyDown_number" >
+        			<TextBox x:Name="textbox_maxconnection" HorizontalAlignment="Left" Height="23.808" Margin="530.372,116.816,-58.169,0" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="5" KeyDown="textbox_KeyDown_number" MaxLines="1" >
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -175,7 +175,7 @@
         				</TextBox.BorderBrush>
         			</TextBox>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405.763,32.363,0,0" Height="37.084" Width="119.609" Foreground="#FF111111" FontSize="14.667"><Run Language="zh-cn" Text="Home Page"/></TextBlock>
-        			<TextBox x:Name="textbox_homedic" HorizontalAlignment="Left" Height="23.808" Margin="530.372,32.363,-58.169,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30">
+        			<TextBox x:Name="textbox_homedic" HorizontalAlignment="Left" Height="23.808" Margin="530.372,32.363,-58.169,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160.44" TextChanged="textbox_TextChanged" MaxLength="30" MaxLines="1">
         				<TextBox.BorderBrush>
         					<LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         						<GradientStop Color="#FFABADB3" Offset="0.05"/>
@@ -195,8 +195,9 @@
 
         		</Grid>
         	</UserControl>
-        	<UserControl x:Name="content_home" Height="320.336" VerticalAlignment="Top" HorizontalAlignment="Left" Width="661.143" Margin="-28.5,0,0,0">
+        	<UserControl x:Name="content_home" Height="320.336" VerticalAlignment="Top" HorizontalAlignment="Left" Width="661.143" Margin="-28.5,0,0,0" d:IsHidden="True">
         		<Grid HorizontalAlignment="Left" Height="320.336" VerticalAlignment="Top" Width="635.943" Margin="0,0,-3.3,0">
+        			<TextBlock x:Name="FileBuffer" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="341,216.5,0,0" Height="21.46" Width="167.409" Foreground="#FF666666" FontSize="16"><Run Language="zh-cn" Text="File Buffer Usage"/></TextBlock>
         			<Rectangle x:Name="start_rectangle" HorizontalAlignment="Left" Height="50.337" Margin="608.799,288.671,-95.923,-18.672" Stroke="#FF70AD47" VerticalAlignment="Top" Width="123.067" StrokeThickness="2" Opacity="0.595" />
         			<StackPanel HorizontalAlignment="Left" Height="365" VerticalAlignment="Top" Width="766" Orientation="Horizontal" Margin="13,-89,-143.057,0">
         				<chart:RadialGaugeChart
@@ -242,9 +243,8 @@
         					</chart:RadialGaugeChart.Series>
         				</chart:RadialGaugeChart>
         			</StackPanel>
-        			<TextBlock x:Name="Cpu" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="110,215.5,0,0" Height="27.46" Width="96.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="CPU Usage"/></TextBlock>
-        			<TextBlock x:Name="FileBuffer" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="340,215.5,0,0" Height="27.46" Width="127.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="File Buffer Usage"/></TextBlock>
-        			<TextBlock x:Name="Connect" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="593,215.5,-84.95,0" Height="27.46" Width="127.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="Connection Pool"/></TextBlock>
+        			<TextBlock x:Name="Cpu" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="106,216.5,0,0" Height="27.46" Width="96.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="CPU Usage"/></TextBlock>
+        			<TextBlock x:Name="Connect" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="593,216.5,-84.95,0" Height="27.46" Width="127.893" Foreground="#FF666666" Background="White" FontSize="16"><Run Language="zh-cn" Text="Connection Pool"/></TextBlock>
         			<TextBlock x:Name="text_start" HorizontalAlignment="Left" Margin="611.98,289.396,-93.771,-15.838" TextWrapping="Wrap" VerticalAlignment="Center" Height="46.778" Width="117.734" Foreground="#FF70AD47" 
         				FontSize="32" PreviewMouseLeftButtonUp="OnStartClicked" TextAlignment="Center" 
         				MouseEnter="text_start_MouseEnter" MouseLeave="text_start_MouseLeave"  RenderTransformOrigin="-0.048,0.347" Cursor="Hand" Opacity="0.6" ><Run Language="zh-cn" Text="Start"/></TextBlock>

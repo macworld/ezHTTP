@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
+using System.IO;
 using FileManager;
-using HttpParser;
 using SocketManager;
-using System.Net.Sockets;
 using CommonLib;
 namespace ezHttp
 {
@@ -21,11 +17,16 @@ namespace ezHttp
 
         internal static bool StartService()
         {
+            Logger log = new Logger("AppLogger");
+            if (!Directory.Exists(FileManager.Properties.FileManagerSettings.Default.ServerDirectory))
+            {
+                log.Error("Start failed: Server Directory doesn't exist!");
+                return false;
+            }
             socketServer = new SocketServer();
             socketServer.Init();
             if (socketServer.Start() == false)
             {
-                Logger log=new Logger("AppLogger");
                 return false;
             }
                 
