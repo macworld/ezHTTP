@@ -2,6 +2,6 @@ ezHTTP
 ======
 
 Simple HTTP server written in C#
-## Screen Shot
+#### Screen Shot
 ![](https://github.com/macworld/ezHTTP/blob/master/screen_shot.png)
 
